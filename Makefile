@@ -1,4 +1,10 @@
-SHELL := /bin/bash -O globstar
+#SHELL := /bin/bash -O globstar
+
+first_run:
+	# Команда для первого запуска
+	cp .env.example .env
+	cp .docker.env.example .docker.env
+	docker-compose -f docker-compose.yml up --build -d
 
 test:
 	pytest tests
