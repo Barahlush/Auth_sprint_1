@@ -1,3 +1,4 @@
+# mypy: allow-untyped-defs
 from dotenv import find_dotenv
 from pydantic import BaseSettings, RedisDsn
 
