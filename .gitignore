@@ -61,3 +61,10 @@ venv.bak/
 instance/
 .webassets-cache
 .idea/
+
+# Docker
+.docker.env
+
+# PyCharm
+auth_service/requirements.txt
+tests/requirements.txt
