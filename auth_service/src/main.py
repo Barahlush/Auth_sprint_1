@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from src.utils.config import settings
+from utils.config import settings
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = settings.DATABASE_URL
