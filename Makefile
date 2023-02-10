@@ -1,4 +1,10 @@
-SHELL := /bin/bash -O globstar
+#SHELL := /bin/bash -O globstar
+
+env_copy:
+	# Build and spin up main services, and run all tests interactively
+	cp .env.example .env
+	cp .docker.env.example .docker.env
+	echo Done
 
 lint:
 	@echo
@@ -32,7 +38,5 @@ test:
 run_dev:
 	# Build and spin up main services with open external ports.
 	# Use when you want to run tests locally of debug services directly
-	cp .env.example .env
-	cp .docker.env.example .docker.env
 	poetry export -f requirements.txt --output tests/requirements.txt --without-hashes
 	docker-compose -f docker-compose.yml -f tests/docker-compose.yml up --build -d
