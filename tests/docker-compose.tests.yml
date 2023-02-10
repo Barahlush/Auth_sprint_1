@@ -1,5 +1,6 @@
 services:
   tests:
+    build: ./tests/
     depends_on:
       - auth_service
     env_file:
