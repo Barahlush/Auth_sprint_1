@@ -2,7 +2,7 @@ services:
   tests:
     build: ./tests/
     depends_on:
-      - async_api
+      - auth_service
     env_file:
       - .env
       - .docker.env

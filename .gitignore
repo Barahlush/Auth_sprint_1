@@ -58,3 +58,10 @@ env.bak/
 venv.bak/
 
 .vscode
+
+# Docker
+.docker.env
+
+# PyCharm
+auth_service/requirements.txt
+tests/requirements.txt

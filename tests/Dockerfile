@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.10-alpine
 
 WORKDIR /tests
 
@@ -12,7 +12,5 @@ RUN pip3 install --upgrade pip \
 
 COPY . .
 
-RUN chmod +x start.sh
-RUN chmod +x functional/utils/wait-for-it.sh
 RUN ls
-CMD ./start.sh
+CMD python3 -m pytest

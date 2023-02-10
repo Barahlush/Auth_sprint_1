@@ -11,10 +11,6 @@ services:
       - .docker.env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_DB: users
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: 123qwe
 
   auth_service:
     build: auth_service
