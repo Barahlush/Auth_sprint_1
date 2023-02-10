@@ -5,7 +5,7 @@ WORKDIR /tests
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY tests/requirements.txt .
+COPY requirements.txt .
 
 RUN pip3 install -r requirements.txt --no-cache-dir
 
