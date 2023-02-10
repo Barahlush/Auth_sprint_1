@@ -29,6 +29,7 @@ test:
 	cp .env.example .env
 	cp .docker.env.example .docker.env
 	poetry export -f requirements.txt --output tests/requirements.txt --without-hashes
+	poetry export -f requirements.txt --output auth_service/requirements.txt --without-hashes
 	docker-compose -f docker-compose.yml -f tests/docker-compose.yml -f tests/docker-compose.tests.yml up --build
 
 run_dev:
