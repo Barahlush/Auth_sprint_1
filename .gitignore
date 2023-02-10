@@ -58,3 +58,6 @@ env.bak/
 venv.bak/
 
 .vscode
+instance/
+.webassets-cache
+.idea/
