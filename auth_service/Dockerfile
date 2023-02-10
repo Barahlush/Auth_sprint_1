@@ -1,4 +1,5 @@
 # Builds the requirements and runs the auth service
+
 FROM python:3.10-alpine as uwsgi-builder
 
 RUN apk add --no-cache linux-headers g++
@@ -13,7 +14,7 @@ WORKDIR /opt/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt .
+COPY requirements.txt requirements.txt
 COPY --from=uwsgi-builder /root/wheels /root/wheels
 
 RUN pip install \
