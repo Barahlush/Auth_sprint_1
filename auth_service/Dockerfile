@@ -26,4 +26,5 @@ RUN pip install \
 RUN rm -rf /root/wheels
 #CMD ["gunicorn", "main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
 #CMD ["echo", "Auth service has been built!"]
-CMD ["python", "src/main.py"]
+RUN ls
+CMD ["python", "main.py"]
