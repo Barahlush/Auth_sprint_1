@@ -1,6 +1,8 @@
 services:
   tests:
-    build: ./tests/
+    build:
+      context: .
+      dockerfile: tests/Dockerfile
     depends_on:
       - auth_service
     env_file:
