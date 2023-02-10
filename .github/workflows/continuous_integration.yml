@@ -36,4 +36,4 @@ jobs:
           run: poetry run make lint
           
         - name: Run tests
-          run: make test
+          run: poetry run make test

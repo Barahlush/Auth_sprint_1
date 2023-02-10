@@ -5,10 +5,10 @@ WORKDIR /tests
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+COPY . .
+
 RUN pip3 install --upgrade pip \
     &pip3 install -r requirements.txt --no-cache-dir
-
-COPY . .
 
 RUN ls
 CMD python3 -m pytest
