@@ -19,6 +19,13 @@ gevent = ">=22.10.2,<22.11.0"
 wheel = "0.38.1"
 gunicorn = ">=20.1.0,<20.2.0"
 pytest = "^7.2.1"
+flask-security-too = "^5.1.0"
+peewee = "^3.15.4"
+types-peewee = "^3.15.0.5"
+sqlalchemy = "^2.0.3"
+psycopg2-binary = "^2.9.5"
+loguru = "^0.6.0"
+types-psycopg2 = "^2.9.21.4"
 
 [tool.poetry.group.dev.dependencies]
 blue = "*"
@@ -36,9 +43,12 @@ line-length = 79
 filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.mypy]
-ignore_missing_imports = true
+ignore_missing_imports = false
 disallow_untyped_defs = true
 strict = true
+implicit_reexport = true
+no-namespace-packages = false
+
 
 [tool.ruff]
 line-length = 79

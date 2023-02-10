@@ -11,22 +11,25 @@ services:
       - .docker.env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    expose:
+      - "5432"
 
   auth_service:
     build: auth_service
     container_name: auth_service
-    restart: always
     volumes:
       - ./auth_service:/opt/app
     env_file:
       - .env
-    expose: 
-      - "8000"
+    ports: 
+      - "5000:5000"
+    depends_on:
+      - postgres
 
   redis:
     container_name: redis
     image: redis:6.2.6
-    ports:
+    expose:
       - "6379"
 
   nginx:
