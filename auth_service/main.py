@@ -5,14 +5,19 @@ import psycopg2
 from flask_security import hash_password
 from loguru import logger
 from psycopg2.errors import DuplicateDatabase
-from src.app import app
-from src.core.config import POSTGRES_CONFIG
+from src.core.config import APP_HOST, APP_PORT, DEBUG, POSTGRES_CONFIG
 from src.core.models import Role, User, UserRoles
-from src.core.security import initialize_security_extention
+from src.core.security import SecureFlask, initialize_security_extention
+from src.core.views import views
 from src.db.postgres import db
-from src.views.home import my_view
 
 if __name__ == '__main__':
+
+    # Create app
+    app = SecureFlask(__name__)
+    app.config['DEBUG'] = DEBUG
+
+    # Create the database if it doesn't exist
     conn = psycopg2.connect(
         database='postgres',
         user=POSTGRES_CONFIG.user,
@@ -27,14 +32,15 @@ if __name__ == '__main__':
         except DuplicateDatabase:
             pass
 
+    # Setup app and db
     with app.app_context():
-        # Create the database if it doesn't exist
-
         db.init(**asdict(POSTGRES_CONFIG))
         logger.info('Connected to database {}', POSTGRES_CONFIG.database)
-        app.register_blueprint(my_view)
+        app.register_blueprint(views)
+
         # Setup Flask-Security
         initialize_security_extention(app, db)
+
         # Create a user to test with
         db.create_tables([User, Role, UserRoles], safe=True)
         if not app.security.datastore.find_user(email='test@me.com'):
@@ -42,4 +48,4 @@ if __name__ == '__main__':
                 email='test@me.com', password=hash_password('password')
             )
 
-    app.run(host='127.0.0.1', port=5000)
+    app.run(host=APP_HOST, port=APP_PORT)

@@ -30,3 +30,7 @@ SECURITY_PASSWORD_SALT = os.environ.get(
 SECRET_KEY = os.environ.get(
     'SECRET_KEY', 'pf9Wkove4IKEAXvy-cQkeDPhv9Cb3Ag-wyJILbq_dFw'
 )
+
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+APP_HOST = os.environ.get('APP_HOST', '0.0.0.0')   # noqa
+APP_PORT = int(os.environ.get('APP_PORT', 5000))
