@@ -109,6 +109,17 @@ black = "22.1.0"
 flake8 = ">=3.8,<5.0.0"
 
 [[package]]
+name = "bulma"
+version = "1.0.1"
+description = "修改logger传入参数"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "bulma-1.0.1.tar.gz", hash = "sha256:29d40b5200a9d2b8bdd67804091d6287ab07d8d959bfc13b41b580d29742952f"},
+]
+
+[[package]]
 name = "cachecontrol"
 version = "0.12.11"
 description = "httplib2 caching for requests"
@@ -2167,4 +2178,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "1b7246b24c9475dee66e8c8e5d7b10f707097c61e9ef1ca33487d6c72e147c30"
+content-hash = "8eaec10836cc326006c42fd553b7d909ebc7f4f073bcbc4b24910850eeb442ca"

@@ -29,7 +29,7 @@ APP_PORT = int(os.environ.get('APP_PORT', 5000))
 
 
 APP_CONFIG = {
-    'SECURITY_LOGIN_URL': '/users/signin/',
+    'SECURITY_LOGIN_URL': '/users/login/',
     'SECURITY_LOGOUT_URL': '/users/logout/',
     'SECURITY_REGISTER_URL': '/users/signup/',
     'SECURITY_CHANGE_URL': '/users/change/',

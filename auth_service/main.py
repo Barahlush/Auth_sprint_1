@@ -5,12 +5,7 @@ import psycopg2
 from flask_security.utils import hash_password
 from loguru import logger
 from psycopg2.errors import DuplicateDatabase
-from src.core.config import (
-    APP_CONFIG,
-    APP_HOST,
-    APP_PORT,
-    POSTGRES_CONFIG,
-)
+from src.core.config import APP_CONFIG, APP_HOST, APP_PORT, POSTGRES_CONFIG
 from src.core.models import Role, User, UserRoles
 from src.core.security import SecureFlask, initialize_security_extention
 from src.core.views import views
@@ -48,10 +43,13 @@ if __name__ == '__main__':
 
         # Create a user to test with
         db.create_tables([User, Role, UserRoles], safe=True)
-        if not app.security.datastore.find_user(email='test@me.com'):
+        tests_user = app.security.datastore.find_user(email='test@me.com')
+        if not tests_user:
             app.security.datastore.create_user(
                 email='test@me.com',
                 password=hash_password('password'),  # type: ignore
             )
+        app.security.datastore.find_or_create_role(name='admin')
+        app.security.datastore.add_role_to_user(tests_user, 'admin')
 
     app.run(host=APP_HOST, port=APP_PORT)

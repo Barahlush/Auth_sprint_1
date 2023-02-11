@@ -27,6 +27,7 @@ psycopg2-binary = "^2.9.5"
 loguru = "^0.6.0"
 types-psycopg2 = "^2.9.21.4"
 flask-security = "^3.0.0"
+bulma = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 blue = "*"

@@ -18,17 +18,17 @@
           <div class="container">
             <div id="navbarMenuHeroA" class="navbar-menu">
               <div class="navbar-end">
-                <a href="{{ url_for('views.home') }}" class="navbar-item">
+                <a href="{{ url_for_security('home') }}" class="navbar-item">
                   Home
                 </a>
-                <a href="{{ url_for('views.profile') }}" class="navbar-item">
+                <a href="{{ url_for_security('profile') }}" class="navbar-item">
                   Profile
                 </a>
                 <a href="{{ url_for_security('login') }}" class="navbar-item">
                   Login
                 </a>
                 <a
-                  href="{{ url_for_security('register') }}"
+                  href="{{ url_for_security('signup') }}"
                   class="navbar-item"
                 >
                   Sign Up
