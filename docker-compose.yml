@@ -13,15 +13,18 @@ services:
       - postgres_data:/var/lib/postgresql/data/
 
   auth_service:
-    build: auth_service
+    build:
+      context: .
+      dockerfile: ./auth_service/Dockerfile
     container_name: auth_service
     restart: always
-    volumes:
-      - ./auth_service:/opt/app
+    depends_on:
+      - redis
     env_file:
       - .env
-    expose: 
-      - "8000"
+      - .docker.env
+    ports:
+      - "5000"
 
   redis:
     container_name: redis

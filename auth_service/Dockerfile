@@ -5,16 +5,16 @@ FROM python:3.10-alpine as uwsgi-builder
 RUN apk add --no-cache linux-headers g++
 RUN pip install --no-cache-dir --upgrade pip==22.3.1
 
-COPY requirements.txt requirements.txt
+COPY auth_service/requirements.txt requirements.txt
 RUN pip wheel --no-cache-dir --wheel-dir=/root/wheels -r requirements.txt
 
 
 FROM python:3.10-alpine
-WORKDIR /opt/app
+WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt requirements.txt
+COPY auth_service/requirements.txt requirements.txt
 COPY --from=uwsgi-builder /root/wheels /root/wheels
 
 RUN pip install \
