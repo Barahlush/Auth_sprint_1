@@ -4,11 +4,11 @@ CREATE SCHEMA IF NOT EXISTS auth;
 CREATE TABLE IF NOT EXISTS auth.user
 (
     id                  uuid                     NOT NULL PRIMARY KEY,
-    login               varchar(128)             NOT NULL UNIQUE,
     password            TEXT                     NOT NULL,
     full_name           varchar(255)             NOT NULL,
     email               varchar(255)             NOT NULL UNIQUE,
-    permitted_devices   text[]                   NOT NULL,
+    fs_uniquifier       text             NOT NULL UNIQUE,
+    permitted_devices   text[]                   NOT NULL UNIQUE,
     active              BOOLEAN                  NOT NULL,
     registered_date     timestamp with time zone NOT NULL,
     updated_at          timestamp with time zone NOT NULL
@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS auth.login_history
 (
     id          uuid                     NOT NULL PRIMARY KEY,
     user_id     uuid                     NOT NULL REFERENCES auth.user (id) ON DELETE CASCADE,
-    action      varchar(255)             NOT NULL,
     device      text[]                   NOT NULL
 );
 
