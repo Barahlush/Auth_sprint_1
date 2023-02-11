@@ -525,6 +525,13 @@ paths:
   "/users/{user_id}/roles/check":
     post:
       description: Check if a user has a role
+      parameters:
+        - name: user_id
+          in: path
+          description: The ID of the user
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:

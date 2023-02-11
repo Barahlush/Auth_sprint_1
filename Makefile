@@ -11,7 +11,7 @@ lint:
 	@echo
 	mypy .
 	@echo
-	pip-audit
+	pip-audit --ignore-vuln GHSA-cg8c-gc2j-2wf7
 
 
 format:

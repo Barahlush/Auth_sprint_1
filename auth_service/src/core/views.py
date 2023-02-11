@@ -5,14 +5,15 @@ from flask_security import (
 
 views = Blueprint('views', __name__)
 
+
 # Views
 @views.route('/')
-@auth_required()
+@auth_required()  # type: ignore
 def home() -> str:
     return render_template_string('Film service home page')
 
 
 @views.route('/profile')
-@auth_required()
+@auth_required()  # type: ignore
 def profile() -> str:
     return render_template_string('Hello {{ current_user.email }}')

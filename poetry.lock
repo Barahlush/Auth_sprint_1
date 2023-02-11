@@ -20,6 +20,21 @@ tests = ["attrs[tests-no-zope]", "zope.interface"]
 tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy (>=0.971,<0.990)", "mypy (>=0.971,<0.990)", "pympler", "pympler", "pytest (>=4.3.0)", "pytest (>=4.3.0)", "pytest-mypy-plugins", "pytest-mypy-plugins", "pytest-xdist[psutil]", "pytest-xdist[psutil]"]
 
 [[package]]
+name = "babel"
+version = "2.11.0"
+description = "Internationalization utilities"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "Babel-2.11.0-py3-none-any.whl", hash = "sha256:1ad3eca1c885218f6dce2ab67291178944f810a10a9b5f3cb8382a5a232b64fe"},
+    {file = "Babel-2.11.0.tar.gz", hash = "sha256:5ef4b3226b0180dedded4229651c8b0e1a3a6a2837d45a073272f313e4cf97f6"},
+]
+
+[package.dependencies]
+pytz = ">=2015.7"
+
+[[package]]
 name = "black"
 version = "22.1.0"
 description = "The uncompromising code formatter."
@@ -545,6 +560,24 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-babelex"
+version = "0.9.4"
+description = "Adds i18n/l10n support to Flask applications"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Flask-BabelEx-0.9.4.tar.gz", hash = "sha256:39a59ccee9386a9d52d80b9101224402036aedc2c7873b11deef6e4e21cace27"},
+    {file = "Flask_BabelEx-0.9.4-py3-none-any.whl", hash = "sha256:f744d0557cb04cafed733cfa96e7373b46263d4cf79a2c5988c65085f360d873"},
+]
+
+[package.dependencies]
+Babel = ">=1.0"
+Flask = "*"
+Jinja2 = ">=2.5"
+speaklater = ">=1.2"
+
+[[package]]
 name = "flask-login"
 version = "0.6.2"
 description = "User authentication and session management for Flask."
@@ -561,6 +594,21 @@ Flask = ">=1.0.4"
 Werkzeug = ">=1.0.1"
 
 [[package]]
+name = "flask-mail"
+version = "0.9.1"
+description = "Flask extension for sending email"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Flask-Mail-0.9.1.tar.gz", hash = "sha256:22e5eb9a940bf407bcf30410ecc3708f3c56cc44b29c34e1726fe85006935f41"},
+]
+
+[package.dependencies]
+blinker = "*"
+Flask = "*"
+
+[[package]]
 name = "flask-principal"
 version = "0.4.0"
 description = "Identity management for flask"
@@ -574,6 +622,33 @@ files = [
 [package.dependencies]
 blinker = "*"
 Flask = "*"
+
+[[package]]
+name = "flask-security"
+version = "3.0.0"
+description = "Simple security for Flask apps."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Flask-Security-3.0.0.tar.gz", hash = "sha256:d61daa5f5a48f89f30f50555872bdf581b2c65804668b0313345cd7beff26432"},
+    {file = "Flask_Security-3.0.0-py2.py3-none-any.whl", hash = "sha256:ef837c03558db41335c8dabd16ae4977af0a5ef0c2cdecf738e33ef5202ce489"},
+]
+
+[package.dependencies]
+Flask = ">=0.11"
+Flask-BabelEx = ">=0.9.3"
+Flask-Login = ">=0.3.0"
+Flask-Mail = ">=0.7.3"
+Flask-Principal = ">=0.3.3"
+Flask-WTF = ">=0.13.1"
+itsdangerous = ">=0.21"
+passlib = ">=1.7"
+
+[package.extras]
+all = ["Flask-CLI (>=0.4.0)", "Flask-CLI (>=0.4.0)", "Flask-Mongoengine (>=0.7.0)", "Flask-Mongoengine (>=0.7.0)", "Flask-Peewee (>=0.6.5)", "Flask-Peewee (>=0.6.5)", "Flask-SQLAlchemy (>=1.0)", "Flask-SQLAlchemy (>=1.0)", "Flask-Sphinx-Themes (>=1.0.1)", "Flask-Sphinx-Themes (>=1.0.1)", "Sphinx (>=1.4.2)", "Sphinx (>=1.4.2)", "bcrypt (>=1.0.2)", "bcrypt (>=1.0.2)", "check-manifest (>=0.25)", "check-manifest (>=0.25)", "coverage (>=4.0)", "coverage (>=4.0)", "isort (>=4.2.2)", "isort (>=4.2.2)", "mock (>=1.3.0)", "mock (>=1.3.0)", "mongoengine (>=0.10.0)", "mongoengine (>=0.10.0)", "pony (>=0.7.1)", "pony (>=0.7.1)", "pydocstyle (>=1.0.0)", "pydocstyle (>=1.0.0)", "pytest (>=3.0.5)", "pytest (>=3.0.5)", "pytest-cache (>=1.0)", "pytest-cache (>=1.0)", "pytest-cov (>=2.4.0)", "pytest-cov (>=2.4.0)", "pytest-flakes (>=1.0.1)", "pytest-flakes (>=1.0.1)", "pytest-pep8 (>=1.0.6)", "pytest-pep8 (>=1.0.6)", "pytest-translations (>=1.0.4)", "pytest-translations (>=1.0.4)", "sqlalchemy (>=0.8.0)", "sqlalchemy (>=0.8.0)"]
+docs = ["Flask-Sphinx-Themes (>=1.0.1)", "Sphinx (>=1.4.2)"]
+tests = ["Flask-CLI (>=0.4.0)", "Flask-Mongoengine (>=0.7.0)", "Flask-Peewee (>=0.6.5)", "Flask-SQLAlchemy (>=1.0)", "bcrypt (>=1.0.2)", "check-manifest (>=0.25)", "coverage (>=4.0)", "isort (>=4.2.2)", "mock (>=1.3.0)", "mongoengine (>=0.10.0)", "pony (>=0.7.1)", "pydocstyle (>=1.0.0)", "pytest (>=3.0.5)", "pytest-cache (>=1.0)", "pytest-cov (>=2.4.0)", "pytest-flakes (>=1.0.1)", "pytest-pep8 (>=1.0.6)", "pytest-translations (>=1.0.4)", "sqlalchemy (>=0.8.0)"]
 
 [[package]]
 name = "flask-security-too"
@@ -1564,6 +1639,18 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "pytz"
+version = "2022.7.1"
+description = "World timezone definitions, modern and historical"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pytz-2022.7.1-py2.py3-none-any.whl", hash = "sha256:78f4f37d8198e0627c5f1143240bb0206b8691d8d7ac6d78fee88b78733f8c4a"},
+    {file = "pytz-2022.7.1.tar.gz", hash = "sha256:01a0681c4b9684a28304615eba55d1ab31ae00bf68ec157ec3708a8182dbbcd0"},
+]
+
+[[package]]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
@@ -1674,28 +1761,28 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "ruff"
-version = "0.0.244"
+version = "0.0.245"
 description = "An extremely fast Python linter, written in Rust."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "ruff-0.0.244-py3-none-macosx_10_7_x86_64.whl", hash = "sha256:5d65a0adffa51314cf9f1036c51dbcde0462b23b49a3d8e3a696a221f9f46f54"},
-    {file = "ruff-0.0.244-py3-none-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:3d6bf5094f2c447f5ff8d10c670dc1bc8b7f70cb5f4e43afe1d0624b934c1284"},
-    {file = "ruff-0.0.244-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c0f54790b297d5df8120a348c91426a0375c40f62880d30438e46922399b29bf"},
-    {file = "ruff-0.0.244-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:88e263e3d7267b4b10f5c1fc1446c5d6b47824c6d78e5c3a97ef79c83d9cb837"},
-    {file = "ruff-0.0.244-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8044c79098e3f2deaf970ab468bf5661b193163369bfe5bbda636e6363aa7932"},
-    {file = "ruff-0.0.244-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:258e5e3386a8efdff9f253395cc03a3a88204442ac8db50aeb0a529e2862d57b"},
-    {file = "ruff-0.0.244-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:bd09c523aeed4d81f358093dc4df384a4db42ff5f9627c9506c26c2becbe19a7"},
-    {file = "ruff-0.0.244-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:c98f0d4a4e052e8b0e27b47e83563026d749b07a21a097780cd283c2f885ad3c"},
-    {file = "ruff-0.0.244-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2359f840c95364d779b86a822fe025fa416eb14adc661c1263bc39e90065f0bd"},
-    {file = "ruff-0.0.244-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:8b85ced1e75b7cf1dd90d0708f8e46e2d58fc124334492cc5103f24d832a3922"},
-    {file = "ruff-0.0.244-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:9c2d49c2021bf80f3e66968c1a41f89061911ffb7ed1f0d39a3204a45fc97ba7"},
-    {file = "ruff-0.0.244-py3-none-musllinux_1_2_i686.whl", hash = "sha256:da77d573c7a5b27bad43468fb7e47e78e22715426beb4e673106d24a9a584838"},
-    {file = "ruff-0.0.244-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:9f16fc3380753310af2a10e2867dfc133849e51c545561ec0a389aa93b3058b0"},
-    {file = "ruff-0.0.244-py3-none-win32.whl", hash = "sha256:b3fc70a4c5d5a0ab8e5b3c3e818ca224913eee84f65bf63ee212af2bbd5f1792"},
-    {file = "ruff-0.0.244-py3-none-win_amd64.whl", hash = "sha256:78bbc5d1cca0a8752f6e4b3f4485f4c4f2428543a0777d1bde865aa43bdab190"},
-    {file = "ruff-0.0.244.tar.gz", hash = "sha256:7c05773e990348a6d7628b9b7294fe76303bc870dd94d9c34154bc1560053050"},
+    {file = "ruff-0.0.245-py3-none-macosx_10_7_x86_64.whl", hash = "sha256:9f3210cd7faa00894c7dbdb5c370e43f43481193bceb96da5e5cded3f4079e64"},
+    {file = "ruff-0.0.245-py3-none-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:776acbadbac4feb9d6f077963a1b339ce6374d5911464587c304a5705bac47e0"},
+    {file = "ruff-0.0.245-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:adc5def9e3a6d998f2c2121011b44fee235c92dbf5417a80f0b40b38a72bd722"},
+    {file = "ruff-0.0.245-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:4f7309411dc185ab21fb0940825fac29fc6d064c200324eec86c40364691382c"},
+    {file = "ruff-0.0.245-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d0fee8371d8624cb1efd6464a17832ad23761050456fb33e1e4e24ca0dfddbc1"},
+    {file = "ruff-0.0.245-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:95ac8826f11f027866f5fe8bfaccf2ac4882347b4845e7ff196ad880f5b3e508"},
+    {file = "ruff-0.0.245-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:11a8bf37b51108499bb0660d43786be1a6979057d491115c9c8ec362f98e839a"},
+    {file = "ruff-0.0.245-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:fb4fc2ab7a121309c45e35759f369c14b03a32b5d5b7ffa65335aecc41668de3"},
+    {file = "ruff-0.0.245-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:db68fce0818e24a766a03c2abc57a2445ccd6fd3e83f9cfb26e092bc6aac6162"},
+    {file = "ruff-0.0.245-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:7824ca46abe7b26cba8f4ca3f2124d2315331e4aad546409feec41f929139500"},
+    {file = "ruff-0.0.245-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:460600ddccb9586f88d24cc6cbef3bf87bb77a1d57aba9ed900f42591e0fa7a7"},
+    {file = "ruff-0.0.245-py3-none-musllinux_1_2_i686.whl", hash = "sha256:6d8c93ba539e9a43191ce86d740b1e7d2a58491902255383ff0e625e95c85d15"},
+    {file = "ruff-0.0.245-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:97b440d6fba04042be810111090429d3f90434f1d642e5d14e4f25e02cbe67ba"},
+    {file = "ruff-0.0.245-py3-none-win32.whl", hash = "sha256:36e11d525a9b282b78892d5d82a9bf0def17dd9c83354a8e01f852cf43cde5ce"},
+    {file = "ruff-0.0.245-py3-none-win_amd64.whl", hash = "sha256:5982a169e3c511f72eddcd9e05206441ded6017e8d90e1cebf6cb9dfbf80311c"},
+    {file = "ruff-0.0.245.tar.gz", hash = "sha256:57e85121b270b3f596391ae3c7c39941619abfc27a6cf372cf0aa525b8ca18e4"},
 ]
 
 [[package]]
@@ -1737,6 +1824,17 @@ python-versions = "*"
 files = [
     {file = "sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0"},
     {file = "sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"},
+]
+
+[[package]]
+name = "speaklater"
+version = "1.3"
+description = "implements a lazy string for python useful for use with gettext"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "speaklater-1.3.tar.gz", hash = "sha256:59fea336d0eed38c1f0bf3181ee1222d0ef45f3a9dd34ebe65e6bfffdd6a65a9"},
 ]
 
 [[package]]
@@ -2069,4 +2167,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "1165f75839683d5aa0776648cbdd68838036178b8db737c57aec3b400447d85d"
+content-hash = "1b7246b24c9475dee66e8c8e5d7b10f707097c61e9ef1ca33487d6c72e147c30"
