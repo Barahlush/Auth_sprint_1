@@ -5,7 +5,7 @@ import psycopg2
 from flask_security import hash_password
 from loguru import logger
 from psycopg2.errors import DuplicateDatabase
-from src.core.config import APP_HOST, APP_PORT, DEBUG, POSTGRES_CONFIG
+from src.core.config import APP_CONFIG, APP_HOST, APP_PORT, POSTGRES_CONFIG
 from src.core.models import Role, User, UserRoles
 from src.core.security import SecureFlask, initialize_security_extention
 from src.core.views import views
@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     # Create app
     app = SecureFlask(__name__)
-    app.config['DEBUG'] = DEBUG
+    app.config |= APP_CONFIG
 
     # Create the database if it doesn't exist
     conn = psycopg2.connect(
