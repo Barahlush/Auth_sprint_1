@@ -7,6 +7,14 @@ services:
     env_file:
       - tests/.docker.env
 
+  tests:
+    build: ./tests/
+    depends_on:
+      - async_api
+    env_file:
+      - .env
+      - .docker.env
+
   redis:
     ports:
       - "6379:6379"
