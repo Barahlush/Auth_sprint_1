@@ -16,6 +16,7 @@ services:
 
   auth_service:
     build: auth_service
+    restart: always
     container_name: auth_service
     volumes:
       - ./auth_service:/opt/app

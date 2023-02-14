@@ -1,9 +1,5 @@
 from typing import Any
 
-from flask_security import (
-    RoleMixin,
-    UserMixin,
-)
 from peewee import (
     BooleanField,
     CharField,
@@ -15,7 +11,7 @@ from peewee import (
 from src.db.postgres import db
 
 
-class Role(RoleMixin, Model):
+class Role(Model):
     name = CharField(unique=True)
 
     class Meta:
@@ -24,7 +20,7 @@ class Role(RoleMixin, Model):
 
 # N.B. order is important since Model also contains a get_id() -
 # we need the one from UserMixin.
-class User(UserMixin, Model):
+class User(Model):
     email = TextField()
     password = TextField()
     fs_uniquifier = TextField(null=False)

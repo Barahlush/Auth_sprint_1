@@ -66,18 +66,6 @@ jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
-name = "blinker"
-version = "1.5"
-description = "Fast, simple object-to-object and broadcast signaling"
-category = "main"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-files = [
-    {file = "blinker-1.5-py2.py3-none-any.whl", hash = "sha256:1eb563df6fdbc39eeddc177d953203f99f097e9bf0e2b8f9f3cf18b6ca425e36"},
-    {file = "blinker-1.5.tar.gz", hash = "sha256:923e5e2f69c155f2cc42dafbbd70e16e3fde24d2d4aa2ab72fbe386238892462"},
-]
-
-[[package]]
 name = "blue"
 version = "0.9.1"
 description = "Blue -- Some folks like black but I prefer blue."
@@ -438,43 +426,6 @@ files = [
 ]
 
 [[package]]
-name = "dnspython"
-version = "2.3.0"
-description = "DNS toolkit"
-category = "main"
-optional = false
-python-versions = ">=3.7,<4.0"
-files = [
-    {file = "dnspython-2.3.0-py3-none-any.whl", hash = "sha256:89141536394f909066cabd112e3e1a37e4e654db00a25308b0f130bc3152eb46"},
-    {file = "dnspython-2.3.0.tar.gz", hash = "sha256:224e32b03eb46be70e12ef6d64e0be123a64e621ab4c0822ff6d450d52a540b9"},
-]
-
-[package.extras]
-curio = ["curio (>=1.2,<2.0)", "sniffio (>=1.1,<2.0)"]
-dnssec = ["cryptography (>=2.6,<40.0)"]
-doh = ["h2 (>=4.1.0)", "httpx (>=0.21.1)", "requests (>=2.23.0,<3.0.0)", "requests-toolbelt (>=0.9.1,<0.11.0)"]
-doq = ["aioquic (>=0.9.20)"]
-idna = ["idna (>=2.1,<4.0)"]
-trio = ["trio (>=0.14,<0.23)"]
-wmi = ["wmi (>=1.5.1,<2.0.0)"]
-
-[[package]]
-name = "email-validator"
-version = "1.3.1"
-description = "A robust email address syntax and deliverability validation library."
-category = "main"
-optional = false
-python-versions = ">=3.5"
-files = [
-    {file = "email_validator-1.3.1-py2.py3-none-any.whl", hash = "sha256:49a72f5fa6ed26be1c964f0567d931d10bf3fdeeacdf97bc26ef1cd2a44e0bda"},
-    {file = "email_validator-1.3.1.tar.gz", hash = "sha256:d178c5c6fa6c6824e9b04f199cf23e79ac15756786573c190d2ad13089411ad2"},
-]
-
-[package.dependencies]
-dnspython = ">=1.15.0"
-idna = ">=2.0.0"
-
-[[package]]
 name = "exceptiongroup"
 version = "1.1.0"
 description = "Backport of PEP 654 (exception groups)"
@@ -545,84 +496,24 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
-name = "flask-login"
-version = "0.6.2"
-description = "User authentication and session management for Flask."
+name = "flask-jwt-extended"
+version = "4.4.4"
+description = "Extended JWT integration with Flask"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.7,<4"
 files = [
-    {file = "Flask-Login-0.6.2.tar.gz", hash = "sha256:c0a7baa9fdc448cdd3dd6f0939df72eec5177b2f7abe6cb82fc934d29caac9c3"},
-    {file = "Flask_Login-0.6.2-py3-none-any.whl", hash = "sha256:1ef79843f5eddd0f143c2cd994c1b05ac83c0401dc6234c143495af9a939613f"},
+    {file = "Flask-JWT-Extended-4.4.4.tar.gz", hash = "sha256:62b521d75494c290a646ae8acc77123721e4364790f1e64af0038d823961fbf0"},
+    {file = "Flask_JWT_Extended-4.4.4-py2.py3-none-any.whl", hash = "sha256:a85eebfa17c339a7260c4643475af444784ba6de5588adda67406f0a75599553"},
 ]
 
 [package.dependencies]
-Flask = ">=1.0.4"
-Werkzeug = ">=1.0.1"
-
-[[package]]
-name = "flask-principal"
-version = "0.4.0"
-description = "Identity management for flask"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "Flask-Principal-0.4.0.tar.gz", hash = "sha256:f5d6134b5caebfdbb86f32d56d18ee44b080876a27269560a96ea35f75c99453"},
-]
-
-[package.dependencies]
-blinker = "*"
-Flask = "*"
-
-[[package]]
-name = "flask-security-too"
-version = "5.1.0"
-description = "Simple security for Flask apps."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "Flask-Security-Too-5.1.0.tar.gz", hash = "sha256:9d2a3b7dd63db6213b3e7868b178757817d56b997a6b8dd736fa7abcabebab96"},
-    {file = "Flask_Security_Too-5.1.0-py2.py3-none-any.whl", hash = "sha256:9f0224e4249fc3b51a1a31878622a4a2f108f8000be754459b6a81f064c2a7fa"},
-]
-
-[package.dependencies]
-blinker = ">=1.4"
-email-validator = ">=1.1.1"
-Flask = ">=2.1.0,<2.3"
-Flask-Login = ">=0.6.0"
-Flask-Principal = ">=0.4.0"
-Flask-WTF = ">=1.0.0"
-itsdangerous = ">=2.1.0"
-passlib = ">=1.7.4"
-wtforms = ">=3.0.0"
+Flask = ">=2.0,<3.0"
+PyJWT = ">=2.0,<3.0"
+Werkzeug = ">=0.14"
 
 [package.extras]
-babel = ["babel (>=2.10.0)", "flask-babel (>=2.0.0)"]
-common = ["bcrypt (>=4.0.1)", "bleach (>=5.0.0)", "flask-mailman (>=0.3.0)"]
-fsqla = ["flask-sqlalchemy (>=3.0.2)", "sqlalchemy (>=1.4.35)", "sqlalchemy-utils (>=0.38.3)"]
-mfa = ["cryptography (>=37.0.4)", "phonenumberslite (>=8.12.18)", "qrcode (>=7.3.1)", "webauthn (>=1.6.0)"]
-
-[[package]]
-name = "flask-wtf"
-version = "1.1.1"
-description = "Form rendering, validation, and CSRF protection for Flask with WTForms."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "Flask-WTF-1.1.1.tar.gz", hash = "sha256:41c4244e9ae626d63bed42ae4785b90667b885b1535d5a4095e1f63060d12aa9"},
-    {file = "Flask_WTF-1.1.1-py3-none-any.whl", hash = "sha256:7887d6f1ebb3e17bf648647422f0944c9a469d0fcf63e3b66fb9a83037e38b2c"},
-]
-
-[package.dependencies]
-Flask = "*"
-itsdangerous = "*"
-WTForms = "*"
-
-[package.extras]
-email = ["email-validator"]
+asymmetric-crypto = ["cryptography (>=3.3.1)"]
 
 [[package]]
 name = "gevent"
@@ -836,7 +727,7 @@ license = ["ukkonen"]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -1191,24 +1082,6 @@ files = [
 ]
 
 [[package]]
-name = "passlib"
-version = "1.7.4"
-description = "comprehensive password hashing framework supporting over 30 schemes"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "passlib-1.7.4-py2.py3-none-any.whl", hash = "sha256:aa6bca462b8d8bda89c70b382f0c298a20b5560af6cbfa2dce410c0a2fb669f1"},
-    {file = "passlib-1.7.4.tar.gz", hash = "sha256:defd50f72b65c5402ab2c573830a6978e5f202ad0d984793c8dde2c4152ebe04"},
-]
-
-[package.extras]
-argon2 = ["argon2-cffi (>=18.2.0)"]
-bcrypt = ["bcrypt (>=3.1.0)"]
-build-docs = ["cloud-sptheme (>=1.10.1)", "sphinx (>=1.6)", "sphinxcontrib-fulltoc (>=1.2.0)"]
-totp = ["cryptography"]
-
-[[package]]
 name = "pathspec"
 version = "0.11.0"
 description = "Utility library for gitignore style pattern matching of file paths."
@@ -1489,6 +1362,24 @@ files = [
 
 [package.extras]
 plugins = ["importlib-metadata"]
+
+[[package]]
+name = "pyjwt"
+version = "2.6.0"
+description = "JSON Web Token implementation in Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "PyJWT-2.6.0-py3-none-any.whl", hash = "sha256:d83c3d892a77bbb74d3e1a2cfa90afaadb60945205d1095d9221f04466f64c14"},
+    {file = "PyJWT-2.6.0.tar.gz", hash = "sha256:69285c7e31fc44f68a1feb309e948e0df53259d579295e6cfe2b1792329f05fd"},
+]
+
+[package.extras]
+crypto = ["cryptography (>=3.4.0)"]
+dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
 name = "pyparsing"
@@ -1976,24 +1867,6 @@ files = [
 dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 
 [[package]]
-name = "wtforms"
-version = "3.0.1"
-description = "Form validation and rendering for Python web development."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "WTForms-3.0.1-py3-none-any.whl", hash = "sha256:837f2f0e0ca79481b92884962b914eba4e72b7a2daaf1f939c890ed0124b834b"},
-    {file = "WTForms-3.0.1.tar.gz", hash = "sha256:6b351bbb12dd58af57ffef05bc78425d08d1914e0fd68ee14143b7ade023c5bc"},
-]
-
-[package.dependencies]
-MarkupSafe = "*"
-
-[package.extras]
-email = ["email-validator"]
-
-[[package]]
 name = "zope-event"
 version = "4.6"
 description = "Very basic event publishing system"
@@ -2069,4 +1942,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "1165f75839683d5aa0776648cbdd68838036178b8db737c57aec3b400447d85d"
+content-hash = "5b22c3ff37cbabb9f9cea531130e3a33ee75a0144486df7777d7babf063cf8de"
