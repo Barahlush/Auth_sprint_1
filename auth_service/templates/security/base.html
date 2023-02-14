@@ -29,6 +29,7 @@
     {%- endblock head %}
   </head>
   <body{% block body_attribs %}{% endblock body_attribs %}>
+<section class="hero is-primary is-fullheight">
 <div class="hero-body">
         <div class="container has-text-centered">
 {% block body -%}
@@ -42,6 +43,7 @@
     {%- endblock body %}
           </div>
       </div>
+    </section>
   </body>
   {%- endblock html %}
 </html>
