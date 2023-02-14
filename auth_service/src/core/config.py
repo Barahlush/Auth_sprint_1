@@ -1,3 +1,4 @@
+import datetime
 import os
 from dataclasses import dataclass
 
@@ -29,19 +30,13 @@ APP_PORT = int(os.environ.get('APP_PORT', 5000))
 
 
 APP_CONFIG = {
-    'SECURITY_LOGIN_URL': '/users/login/',
-    'SECURITY_LOGOUT_URL': '/users/logout/',
-    'SECURITY_REGISTER_URL': '/users/signup/',
-    'SECURITY_CHANGE_URL': '/users/change/',
-    'SECURITY_LOGOUT_METHODS': ['POST'],
-    'SECRET_KEY': os.environ.get(
-        'SECRET_KEY', 'pf9Wkove4IKEAXvy-cQkeDPhv9Cb3Ag-wyJILbq_dFw'
-    ),
-    'SECURITY_PASSWORD_SALT': os.environ.get(
-        'SECURITY_PASSWORD_SALT', '146585145368132386173505678016728509634'
-    ),
-    'SECURITY_SEND_REGISTER_EMAIL': False,
-    'SECURITY_REGISTERABLE': True,
-    'SECURITY_CHANGEABLE': True,
+    'JWT_SECRET_KEY': os.getenv('JWT_SECRET_KEY', 'local-secret'),
+    'JWT_TOKEN_LOCATION': ['cookies'],
+    'JWT_ACCESS_TOKEN_EXPIRES': datetime.timedelta(seconds=1800),
+    'JWT_COOKIE_SECURE': False,
+    'JWT_REFRESH_TOKEN_EXPIRES': datetime.timedelta(days=15),
+    'JWT_COOKIE_CSRF_PROTECT': True,
+    'JWT_ACCESS_CSRF_HEADER_NAME': 'X-CSRF-TOKEN-ACCESS',
+    'JWT_REFRESH_CSRF_HEADER_NAME': 'X-CSRF-TOKEN-REFRESH',
     'DEBUG': True,
 }

@@ -26,7 +26,7 @@ run:
 	cp .env.example .env
 	cp .docker.env.example .docker.env
 	poetry export -f requirements.txt --output auth_service/requirements.txt --without-hashes
-	docker-compose -f docker-compose.yml up --build -d
+	docker-compose -f docker-compose.yml up --build
 
 run_dev:
 	# Build and spin up main services with open external ports.
