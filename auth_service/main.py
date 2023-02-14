@@ -11,11 +11,12 @@ from src.core.security import SecureFlask, initialize_security_extention
 from src.core.views import views
 from src.db.postgres import db
 
-if __name__ == '__main__':
+# Create app
+app = SecureFlask(__name__)
+app.config |= APP_CONFIG
 
-    # Create app
-    app = SecureFlask(__name__)
-    app.config |= APP_CONFIG
+
+if __name__ == '__main__':
 
     # Create the database if it doesn't exist
     conn = psycopg2.connect(
