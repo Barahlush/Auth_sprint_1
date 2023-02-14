@@ -48,6 +48,7 @@ disallow_untyped_defs = true
 strict = true
 implicit_reexport = true
 no-namespace-packages = false
+exclude = 'venv'
 
 
 [tool.ruff]
