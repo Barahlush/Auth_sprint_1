@@ -23,14 +23,25 @@ POSTGRES_CONFIG = PostgresConfig(
     port=int(os.environ.get('POSTGRES_PORT', 5432)),
 )
 
-SECURITY_PASSWORD_SALT = os.environ.get(
-    'SECURITY_PASSWORD_SALT', '146585145368132386173505678016728509634'
-)
-
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY', 'pf9Wkove4IKEAXvy-cQkeDPhv9Cb3Ag-wyJILbq_dFw'
-)
-
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 APP_HOST = os.environ.get('APP_HOST', '0.0.0.0')   # noqa
 APP_PORT = int(os.environ.get('APP_PORT', 5000))
+
+
+APP_CONFIG = {
+    'SECURITY_LOGIN_URL': '/users/login/',
+    'SECURITY_LOGOUT_URL': '/users/logout/',
+    'SECURITY_REGISTER_URL': '/users/signup/',
+    'SECURITY_CHANGE_URL': '/users/change/',
+    'SECURITY_LOGOUT_METHODS': ['POST'],
+    'SECRET_KEY': os.environ.get(
+        'SECRET_KEY', 'pf9Wkove4IKEAXvy-cQkeDPhv9Cb3Ag-wyJILbq_dFw'
+    ),
+    'SECURITY_PASSWORD_SALT': os.environ.get(
+        'SECURITY_PASSWORD_SALT', '146585145368132386173505678016728509634'
+    ),
+    'SECURITY_SEND_REGISTER_EMAIL': False,
+    'SECURITY_REGISTERABLE': True,
+    'SECURITY_CHANGEABLE': True,
+    'DEBUG': True,
+}
