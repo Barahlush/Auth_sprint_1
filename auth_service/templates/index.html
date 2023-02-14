@@ -16,13 +16,23 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <h1 class="title" style="font-size: 120px; color: black">
-                Welcome {% if current_user and current_user.is_authenticated %}back, {{ current_user.email }}{% endif %}!
-            </h1><br>
-            {% if current_user and not current_user.is_authenticated %}
+                Welcome {% if current_user and current_user.is_authenticated %}back{% if current_user.username %}, {{ current_user.username }}{% endif %}{% endif %}!
+            </h1>
+            <h2 class="subtitle" style="color: black">
+                Your email: {{ current_user.email }}</a>
+            </h2>
+            <br>
+            {% if current_user%}
+            {% if current_user.is_authenticated %}
+            <h2 class="subtitle" style="color: black">
+                <a style="font-size: 30px; color: gray" href="{{ url_for_security('logout') }}">{{ _fsdomain('Sign out') }}</a>
+            </h2>
+            {% else %}
             <h2 class="subtitle" style="color: black">
                 Please, <a style="font-size: 30px; color: gray" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _fsdomain('Login') }}</a><br>
                 or <a style="font-size: 30px; color: darkred" href="{{ url_for_security('register') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _fsdomain('Register') }}</a>
             </h2>
+            {% endif %}
             {% endif %}
         </div>
     </div>
