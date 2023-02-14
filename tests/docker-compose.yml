@@ -4,8 +4,16 @@ services:
   auth_service:
     ports:
       - "8000:8000"
-    environment:
-      - CACHE_EXPIRATION_IN_SECONDS=1
+    env_file:
+      - tests/.docker.env
+
+  tests:
+    build: ./tests/
+    depends_on:
+      - async_api
+    env_file:
+      - .env
+      - .docker.env
 
   redis:
     ports:
