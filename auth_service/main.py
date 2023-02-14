@@ -11,7 +11,6 @@ from src.core.security import SecureFlask, initialize_security_extention
 from src.core.views import views
 from src.db.postgres import db
 
-bum = 1
 if __name__ == '__main__':
 
     # Create app
