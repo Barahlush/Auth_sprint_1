@@ -18,9 +18,11 @@
             <h1 class="title" style="font-size: 120px; color: black">
                 Welcome {% if current_user and current_user.is_authenticated %}back{% if current_user.username %}, {{ current_user.username }}{% endif %}{% endif %}!
             </h1>
+            {% if current_user and current_user.is_authenticated %}
             <h2 class="subtitle" style="color: black">
                 Your email: {{ current_user.email }}</a>
             </h2>
+            {% endif %}
             <br>
             {% if current_user%}
             {% if current_user.is_authenticated %}
