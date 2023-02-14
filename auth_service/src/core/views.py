@@ -15,6 +15,5 @@ def admin() -> str:
 
 
 @views.route('/')
-@auth_required()
 def index() -> str:
-    return render_template('security/index.html')
+    return render_template('index.html')

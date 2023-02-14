@@ -7,7 +7,7 @@
     <title>{% block title %}{{ title|default }}{% endblock title %}</title>
 
       {%- block metas %}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       {%- endblock metas %}
 
       {%- block head_scripts %}
@@ -22,10 +22,16 @@
           .fs-error-msg { color: darkred; }
         </style>
       {%- endblock styles %}
+        <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"
+    />
     {%- endblock head %}
   </head>
   <body{% block body_attribs %}{% endblock body_attribs %}>
-    {% block body -%}
+<div class="hero-body">
+        <div class="container has-text-centered">
+{% block body -%}
       {% block navbar %}
       {%- endblock navbar %}
       {% block content -%}
@@ -34,6 +40,8 @@
       {% block scripts %}
       {%- endblock scripts %}
     {%- endblock body %}
+          </div>
+      </div>
   </body>
   {%- endblock html %}
 </html>
