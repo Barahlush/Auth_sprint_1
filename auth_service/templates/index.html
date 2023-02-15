@@ -12,30 +12,16 @@
 </head>
 
 <body>
-<section class="hero is-primary is-fullheight" style="background-color: #e2ef6d">
+<section class="hero is-primary is-fullheight" style="background-color: #74bbc1">
     <div class="hero-body">
         <div class="container has-text-centered">
-            <h1 class="title" style="font-size: 120px; color: black">
-                {{ welcome_string }}
+            <h1 class="title" style="font-size: 80px; color: #fff4d9">
+                Welcome, my traveler!
             </h1>
-            {% if user and user_email %}
             <h2 class="subtitle" style="color: black">
-                Your email: {{ user_email }}</a>
+                Please, <a style="font-size: 30px; color: #ccedff" href="{{ url_for('views.login') }}">Login</a><br>
+                or <a style="font-size: 30px; color: darkred" href="{{ url_for('views.register') }}">Register</a>
             </h2>
-            {% endif %}
-            <br>
-            {% if user %}
-            {% if user.is_authenticated %}
-            <h2 class="subtitle" style="color: black">
-                <a style="font-size: 30px; color: gray" href="{{ url_for_security('logout') }}">{{ _fsdomain('Sign out') }}</a>
-            </h2>
-            {% else %}
-            <h2 class="subtitle" style="color: black">
-                Please, <a style="font-size: 30px; color: gray" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _fsdomain('Login') }}</a><br>
-                or <a style="font-size: 30px; color: darkred" href="{{ url_for_security('register') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _fsdomain('Register') }}</a>
-            </h2>
-            {% endif %}
-            {% endif %}
         </div>
     </div>
 </section>

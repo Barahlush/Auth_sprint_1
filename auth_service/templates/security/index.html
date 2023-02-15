@@ -5,28 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Flask index page</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"
+    />
 </head>
 
 <body>
-<section class="hero is-primary is-fullheight">
-    <div class="hero-head">
-        <nav class="navbar">
-            <div class="container">
-                <div id="navbarMenuHeroA" class="navbar-menu">
-                    <div class="navbar-end">
-                        <a href="{{ url_for_security('login') }}" class="navbar-item">
-                            Login
-                        </a>
-                        <a
-                                href="{{ url_for_security('register') }}"
-                                class="navbar-item"
-                        >
-                            Sign Up
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
+<section class="hero is-primary is-fullheight" style="background-color: #74bbc1">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <h1 class="title" style="font-size: 80px; color: #fff4d9">
+                {{ contex.welcome_string }}
+            </h1>
+            {% if contex.user and contex.user_email %}
+            <h2 class="subtitle" style="color: black">
+                Your email: {{ contex.user_email }}
+            </h2>
+            {% endif %}
+            <br>
+            <h2 class="subtitle" style="color: black; font-size: 30px">
+                Your <a style="color: #ccedff" href="{{ url_for('views.profile') }}">profile</a>
+                <a href="/admin/">Click me to get to Admin Panel!</a>
+            </h2>
+        </div>
     </div>
 </section>
 </body>

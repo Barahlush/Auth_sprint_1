@@ -128,7 +128,7 @@ class PeeweeUserDatastore(
     def create_user(self, **kwargs: Any) -> User:
         """Creates and returns a new user from the given parameters."""
         roles = kwargs.pop('roles', [])
-        user = self.user_model(**self._prepare_create_user_args(**kwargs))
+        user = self.user_model(**kwargs)
         user = self.put(user)
         for role in roles:
             self.add_role_to_user(user, role)

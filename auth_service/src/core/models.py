@@ -23,7 +23,7 @@ class Role(Model):
 class User(Model):
     email = TextField()
     password = TextField()
-    fs_uniquifier = TextField(null=False)
+    fs_uniquifier = TextField()
     active = BooleanField(default=True)
 
     class Meta:

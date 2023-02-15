@@ -8,7 +8,6 @@ from flask import (
     jsonify,
     redirect,
     render_template,
-    render_template_string,
     request,
     url_for,
 )
@@ -17,6 +16,7 @@ from flask_jwt_extended import (
     create_access_token,
     get_current_user,
     get_jwt,
+    jwt_required,
     set_access_cookies,
     verify_jwt_in_request,
 )
@@ -146,19 +146,31 @@ def register() -> ResponseType:
     return response, 302
 
 
-@views.route('/admin')
-@roles_required('admin')
-def admin() -> ResponseType:
-    current_user = get_current_user()
-    return (
-        render_template_string(
-            f'Hello on admin page. Current user '
-            f'{current_user.email} password is {current_user.password}'
-        ),
-        200,
-    )
-
-
 @views.route('/')
+@jwt_required()  # type: ignore
 def index() -> ResponseType:
-    return render_template('index.html'), 200
+    welcome_string = 'Welcome!'
+    current_user = get_current_user()
+    contex = {}
+    if current_user:
+        contex.update({'user': current_user})
+        try:
+            name = current_user.name
+            email = current_user.email
+            contex.update({'"user_name': name})
+            contex.update({'user_email': email})
+            welcome_string = f'Welcome back, {current_user.name}!'
+        except AttributeError:
+            welcome_string = 'Welcome back!'
+    contex.update({'welcome_string': welcome_string})
+    return render_template('security/index.html', contex=contex), 200
+
+
+@views.route('/profile')
+@jwt_required()  # type: ignore
+def profile() -> ResponseType:
+    current_user = get_current_user()
+    response = render_template(
+        'security/profile.html', current_user=current_user
+    )
+    return response, 200
