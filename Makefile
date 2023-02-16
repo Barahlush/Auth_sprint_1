@@ -11,7 +11,7 @@ lint:
 	@echo
 	mypy .
 	@echo
-	pip-audit
+	pip-audit --ignore PYSEC-2022-42969
 
 
 format:

@@ -65,6 +65,7 @@ if __name__ == '__main__':
                 email='test@me.com',
                 password='password',  # noqa
                 roles=['admin'],
+                fs_uniquifier='test',
             )
 
     app.run(host=APP_HOST, port=APP_PORT)
