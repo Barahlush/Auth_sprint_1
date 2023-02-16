@@ -6,7 +6,6 @@ from flask import (
     make_response,
     redirect,
     render_template,
-    render_template_string,
     request,
     url_for,
 )
@@ -108,7 +107,7 @@ def register() -> Response:
 def admin() -> Response:
     current_user = get_current_user()
     return make_response(
-        render_template_string(
+        render_template(
             f'Hello on admin page. Current user '
             f'{current_user.email} password is {current_user.password}'
         ),
@@ -121,16 +120,9 @@ def admin() -> Response:
 def test_page() -> Response:
     current_user = get_current_user()
     return make_response(
-        render_template_string(
-            'Hello on test page.' f'Current user {current_user}'
-        ),
+        render_template('Hello on test page.' f'Current user {current_user}'),
         200,
     )
-
-
-@views.route('/')
-def index() -> Response:
-    return make_response(render_template('security/index.html'), 200)
 
 
 @views.route('/refresh')
@@ -150,3 +142,35 @@ def refresh() -> Response:
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
     return response
+
+
+@views.route('/')
+@jwt_required()  # type: ignore
+def index() -> Response:
+    welcome_string = 'Welcome!'
+    current_user = get_current_user()
+    contex = {}
+    if current_user:
+        contex.update({'user': current_user})
+        try:
+            name = current_user.name
+            email = current_user.email
+            contex.update({'"user_name': name})
+            contex.update({'user_email': email})
+            welcome_string = f'Welcome back, {current_user.name}!'
+        except AttributeError:
+            welcome_string = 'Welcome back!'
+    contex.update({'welcome_string': welcome_string})
+    return make_response(
+        render_template('security/index.html', contex=contex), 200
+    )
+
+
+@views.route('/profile')
+@jwt_required()  # type: ignore
+def profile() -> Response:
+    current_user = get_current_user()
+    return make_response(
+        render_template('security/profile.html', current_user=current_user),
+        200,
+    )

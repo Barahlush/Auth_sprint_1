@@ -11,7 +11,8 @@ def index() -> str:
     welcome_string = 'Welcome!'
     current_user = get_current_user()
     contex = {}
-    logger.info(current_user)
+    logger.info(current_user.__dict__)
+    logger.info(current_user.roles)
     if current_user:
         contex.update({'user': current_user})
         if 'name' in current_user.__dict__:

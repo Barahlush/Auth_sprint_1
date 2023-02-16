@@ -27,6 +27,8 @@ loguru = "^0.6.0"
 types-psycopg2 = "^2.9.21.4"
 flask-jwt-extended = "^4.4.4"
 redis = "^4.5.1"
+wtf-peewee = "^3.0.4"
+flask-admin = "^1.6.0"
 
 [tool.poetry.group.dev.dependencies]
 blue = "*"
