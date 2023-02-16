@@ -3,7 +3,6 @@ from typing import cast
 from flask import (
     Blueprint,
     Response,
-    jsonify,
     make_response,
     redirect,
     render_template,
@@ -12,7 +11,6 @@ from flask import (
     url_for,
 )
 from flask_jwt_extended import (
-    create_access_token,
     get_current_user,
     jwt_required,
     set_access_cookies,
@@ -95,15 +93,13 @@ def register() -> Response:
 
     user = User(name=username, email=email, password=password)
     user.save()
-    access_token = create_access_token(
-        identity=user,
-        additional_claims={
-            'roles': [role.name for role in user.roles]  # type: ignore
-        },
-    )
     next_url = request.args.get('next', url_for('views.index'))
     response = cast(Response, redirect(next_url, 302))
+
+    access_token, refresh_token = create_token_pair(user)
     set_access_cookies(response, access_token)
+    set_refresh_cookies(response, access_token)
+
     return response
 
 
@@ -120,6 +116,18 @@ def admin() -> Response:
     )
 
 
+@views.route('/test')
+@jwt_required()  # type: ignore
+def test_page() -> Response:
+    current_user = get_current_user()
+    return make_response(
+        render_template_string(
+            'Hello on test page.' f'Current user {current_user}'
+        ),
+        200,
+    )
+
+
 @views.route('/')
 def index() -> Response:
     return make_response(render_template('security/index.html'), 200)
@@ -128,11 +136,17 @@ def index() -> Response:
 @views.route('/refresh')
 @jwt_required(refresh=True)   # type: ignore
 def refresh() -> Response:
-    current_user = get_current_user()
-    access_token, refresh_token = create_token_pair(current_user)
+    """Генерирует новую пару токенов, если refresh токен не истёк.
+    Иначе, вызывает expired_token_callback и перенаправляет на страницу логина.
 
-    response = jsonify({'refresh': True}, 200)
+    Returns:
+        Response: Ответ браузеру
+    """
+    current_user = get_current_user()
+    next_url = request.args.get('next', url_for('views.index'))
+    response = cast(Response, redirect(next_url, 302))
+
+    access_token, refresh_token = create_token_pair(current_user)
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
-
     return response

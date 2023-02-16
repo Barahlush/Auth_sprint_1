@@ -96,6 +96,54 @@ def user_lookup_callback(
     return cast(User, User.get_by_id(identity))   # type: ignore
 
 
+@jwt.expired_token_loader
+def expired_token_callback(
+    _jwt_header: dict[str, str | int], jwt_data: dict[str, str | int]
+) -> Response:
+    """Вызывается при истечении срока действия одного из токенов.
+
+    При истечении срока действия refresh токена, происходит редирект на
+    страницу логина.
+
+    При истечении срока действия access токена, происходит редирект на
+    /refresh и затем на искомую страницу.
+
+    Args:
+        _jwt_header (dict[str, str  |  int]): заголовок токена
+        jwt_data (dict[str, str  |  int]): payload токена
+
+    Returns:
+        Response: Ответ браузеру
+    """
+    logger.info('TOKEN EXPIRED')
+    logger.info(request.path)
+    logger.info(jwt_data)
+    token_type = jwt_data['type']
+
+    if token_type == 'refresh':   # noqa
+        return cast(
+            Response,
+            redirect(
+                url_for('views.login', next=request.path),
+            ),
+        )
+    refresh_token = request.cookies.get('refresh_token_cookie')
+    if not refresh_token:
+        return cast(
+            Response,
+            redirect(
+                url_for('views.login', next=request.path),
+            ),
+        )
+
+    return cast(
+        Response,
+        redirect(
+            url_for('views.refresh', next=request.path),
+        ),
+    )
+
+
 def create_token_pair(user: User) -> tuple[str, str]:
     """Создание закодированной пары токенов
 
