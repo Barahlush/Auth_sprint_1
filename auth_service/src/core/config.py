@@ -39,4 +39,7 @@ APP_CONFIG = {
     'JWT_ACCESS_CSRF_HEADER_NAME': 'X-CSRF-TOKEN-ACCESS',
     'JWT_REFRESH_CSRF_HEADER_NAME': 'X-CSRF-TOKEN-REFRESH',
     'DEBUG': True,
+    'SECRET_KEY': os.getenv(
+        'SECRET_KEY', 'pf9Wkove4IKEAXvy-cQkeDPhv9Cb3Ag-wyJILbq_dFw'
+    ),
 }
