@@ -1,9 +1,21 @@
-{% extends "securitybase.html" %}
-{% block content %}
+{% extends "base.html" %} {% block navbar %}
+<nav class="navbar">
+  <div class="container">
+    <div id="navbarMenuHeroA" class="navbar-menu">
+      <div class="navbar-end">
+        <a href="{{ url_for('views.login') }}" class="navbar-item"> Login </a>
+        <a href="{{ url_for('views.register') }}" class="navbar-item">
+          Sign Up
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+{% endblock %} {% block content %}
 <div class="column is-4 is-offset-4">
   <h3 class="title">Sign Up</h3>
   <div class="box">
-    <form method="POST" action="/signup">
+    <form method="POST" action="{{url_for('views.register')}}">
       <div class="field">
         <div class="control">
           <input

@@ -1,9 +1,10 @@
-from flask import render_template
+from flask import Blueprint, render_template
 from flask_jwt_extended import get_current_user, jwt_required
-from main import app
+
+not_auth = Blueprint('not_auth', __name__, url_prefix='/')
 
 
-@app.route('/')
+@not_auth.route('/')
 @jwt_required()  # type: ignore
 def index() -> str:
     welcome_string = 'Welcome!'
@@ -11,7 +12,7 @@ def index() -> str:
     contex = {}
     if current_user:
         contex.update({'user': current_user})
-        if current_user.name:
+        if 'name' in current_user.__dict__:
             welcome_string = f'Welcome back, {current_user.name}!'
             contex.update({'"user_name': current_user.name})
         else:

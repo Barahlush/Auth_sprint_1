@@ -29,19 +29,19 @@
     {%- endblock head %}
   </head>
   <body{% block body_attribs %}{% endblock body_attribs %}>
-<section class="hero is-primary is-fullheight" style="background-color: #e2ef6d; color: black; font-size: 20px">
-<div class="hero-body">
-        <div class="container has-text-centered">
-{% block body -%}
+    <section class="hero is-primary is-fullheight" style="background-color: #e2ef6d; color: black; font-size: 20px">
       {% block navbar %}
       {%- endblock navbar %}
-      {% block content -%}
-      {%- endblock content %}
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          {% block body -%}
+            {% block content -%}
+            {%- endblock content %}
 
-      {% block scripts %}
-      {%- endblock scripts %}
-    {%- endblock body %}
-          </div>
+            {% block scripts %}
+            {%- endblock scripts %}
+          {%- endblock body %}
+        </div>
       </div>
     </section>
   </body>

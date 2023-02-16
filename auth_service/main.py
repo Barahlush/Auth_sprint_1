@@ -5,16 +5,17 @@ import psycopg2
 from flask import Flask
 from loguru import logger
 from psycopg2.errors import DuplicateDatabase
+from routers import not_auth
 from src.core.config import APP_CONFIG, APP_HOST, APP_PORT, POSTGRES_CONFIG
+from src.core.jwt import jwt
 from src.core.models import Role, User, UserRoles
-from src.core.views import jwt, views
+from src.core.views import views
 from src.db.datastore import PeeweeUserDatastore
 from src.db.postgres import db
 
 # Create app
 app = Flask(__name__)
 app.config |= APP_CONFIG
-
 
 if __name__ == '__main__':
 
@@ -38,6 +39,7 @@ if __name__ == '__main__':
         db.init(**asdict(POSTGRES_CONFIG))
         logger.info('Connected to database {}', POSTGRES_CONFIG.database)
         app.register_blueprint(views)
+        app.register_blueprint(not_auth)
         jwt.init_app(app)
         datastore = PeeweeUserDatastore(db)
 

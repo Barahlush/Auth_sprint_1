@@ -1,4 +1,17 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block navbar %}
+<nav class="navbar">
+  <div class="container">
+    <div id="navbarMenuHeroA" class="navbar-menu">
+      <div class="navbar-end">
+        <a href="{{ url_for('views.login') }}" class="navbar-item"> Login </a>
+        <a href="{{ url_for('views.register') }}" class="navbar-item">
+          Sign Up
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+{% endblock %} {% block content %}
 <div class="column is-4 is-offset-4">
   <h3 class="title">Login</h3>
   <div class="box">
@@ -31,6 +44,7 @@
           Remember me
         </label>
       </div>
+      <div style="color: red">{% if error_msg %}{{ error_msg }}{% endif %}</div>
       <button class="button is-block is-info is-large is-fullwidth">
         Login
       </button>
