@@ -26,8 +26,7 @@ psycopg2-binary = "^2.9.5"
 loguru = "^0.6.0"
 types-psycopg2 = "^2.9.21.4"
 flask-jwt-extended = "^4.4.4"
-wtf-peewee = "^3.0.4"
-flask-admin = "^1.6.0"
+redis = "^4.5.1"
 
 [tool.poetry.group.dev.dependencies]
 blue = "*"

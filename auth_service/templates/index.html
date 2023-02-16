@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Flask index page</title>
+    <title>Film database index page</title>
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"
@@ -12,16 +12,31 @@
 </head>
 
 <body>
-<section class="hero is-primary is-fullheight" style="background-color: #74bbc1">
+<section class="hero is-primary is-fullheight" style="background-color: #e2ef6d">
     <div class="hero-body">
         <div class="container has-text-centered">
-            <h1 class="title" style="font-size: 80px; color: #fff4d9">
-                Welcome, my traveler!
+            <h1 class="title" style="font-size: 2em; color: black">
+                Film database index page
+                {{ welcome_string }}
             </h1>
+            {% if user and user_email %}
             <h2 class="subtitle" style="color: black">
-                Please, <a style="font-size: 30px; color: #ccedff" href="{{ url_for('views.login') }}">Login</a><br>
-                or <a style="font-size: 30px; color: darkred" href="{{ url_for('views.register') }}">Register</a>
+                Your email: {{ user_email }}</a>
             </h2>
+            {% endif %}
+            <br>
+            {% if user %}
+            {% if user.is_authenticated %}
+            <h2 class="subtitle" style="color: black">
+                <a style="font-size: 30px; color: gray" href="{{ url_for('views.logout') }}">{{ _fsdomain('Sign out') }}</a>
+            </h2>
+            {% else %}
+            <h2 class="subtitle" style="color: black">
+                Please, <a style="font-size: 30px; color: gray" href="{{ url_for('views.login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _fsdomain('Login') }}</a><br>
+                or <a style="font-size: 30px; color: darkred" href="{{ url_for('views.register') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _fsdomain('Register') }}</a>
+            </h2>
+            {% endif %}
+            {% endif %}
         </div>
     </div>
 </section>
