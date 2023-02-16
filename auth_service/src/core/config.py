@@ -32,11 +32,14 @@ APP_PORT = int(os.environ.get('APP_PORT', 5000))
 APP_CONFIG = {
     'JWT_SECRET_KEY': os.getenv('JWT_SECRET_KEY', 'local-secret'),
     'JWT_TOKEN_LOCATION': ['cookies'],
-    'JWT_ACCESS_TOKEN_EXPIRES': datetime.timedelta(seconds=1800),
-    'JWT_COOKIE_SECURE': False,
-    'JWT_REFRESH_TOKEN_EXPIRES': datetime.timedelta(days=15),
+    'JWT_ACCESS_TOKEN_EXPIRES': datetime.timedelta(hours=12),
+    'JWT_COOKIE_SECURE': False,  # set to True in production
+    'JWT_REFRESH_TOKEN_EXPIRES': datetime.timedelta(days=10),
     'JWT_COOKIE_CSRF_PROTECT': True,
+    'JWT_SESSION_COOKIE': False,
     'JWT_ACCESS_CSRF_HEADER_NAME': 'X-CSRF-TOKEN-ACCESS',
     'JWT_REFRESH_CSRF_HEADER_NAME': 'X-CSRF-TOKEN-REFRESH',
+    'JWT_JSON_KEY': 'access_token',
+    'JWT_REFRESH_JSON_KEY': 'refresh_token',
     'DEBUG': True,
 }
