@@ -1,14 +1,16 @@
 from contextlib import closing
 from dataclasses import asdict
 
+import flask_admin as admin  # type: ignore
 import psycopg2
 from flask import Flask
 from loguru import logger
 from psycopg2.errors import DuplicateDatabase
 from routers import not_auth
+from src.core.admin import UserAdmin, UserInfo
 from src.core.config import APP_CONFIG, APP_HOST, APP_PORT, POSTGRES_CONFIG
 from src.core.jwt import jwt
-from src.core.models import Role, User, UserRoles
+from src.core.models import LoginEvent, Role, User, UserRoles
 from src.core.views import views
 from src.db.datastore import PeeweeUserDatastore
 from src.db.postgres import db
@@ -16,6 +18,8 @@ from src.db.postgres import db
 # Create app
 app = Flask(__name__)
 app.config |= APP_CONFIG
+
+admin = admin.Admin(app, name='Admin Panel')
 
 if __name__ == '__main__':
 
@@ -43,7 +47,9 @@ if __name__ == '__main__':
         jwt.init_app(app)
         datastore = PeeweeUserDatastore(db)
 
-        db.create_tables([User, Role, UserRoles], safe=True)
+        db.create_tables(
+            [User, Role, UserRoles, UserInfo, LoginEvent], safe=True
+        )
         # Create roles
         datastore.find_or_create_role(
             name='admin',
@@ -66,7 +72,9 @@ if __name__ == '__main__':
             datastore.create_user(
                 email='test@me.com',
                 password='password',  # noqa
+                fs_uniquifier='text',
                 roles=['admin'],
             )
+        admin.add_view(UserAdmin(User))
 
     app.run(host=APP_HOST, port=APP_PORT)

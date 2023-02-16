@@ -4,12 +4,14 @@ from typing import Any, Generic, TypeVar
 
 from peewee import Model
 
+from src.core.models import LoginEvent as PeeweeLoginEvent
 from src.core.models import Role as PeeweeRole
 from src.core.models import User as PeeweeUser
 from src.core.models import UserRoles as PeeweeUserRoles
 
 Role = TypeVar('Role')
 User = TypeVar('User')
+LoginEvent = TypeVar('LoginEvent')
 
 AbstractModel = TypeVar('AbstractModel')
 
@@ -40,14 +42,16 @@ class PeeweeDatastore(Datastore[Model]):
         model.delete_instance(recursive=True)
 
 
-class UserDatastore(Generic[User, Role]):
+class UserDatastore(Generic[User, Role, LoginEvent]):
     def __init__(
         self,
-        user_model: type[User],
-        role_model: type[Role],
+        user_model: User,
+        role_model: Role,
+        history_model: LoginEvent,
     ):
         self.user_model = user_model
         self.role_model = role_model
+        self.history_model = history_model
 
     @abstractmethod
     def find_user(self, **kwargs: Any) -> User | None:
@@ -81,9 +85,13 @@ class UserDatastore(Generic[User, Role]):
     def delete_user(self, user: User) -> bool:
         raise NotImplementedError
 
+    @abstractmethod
+    def delete_history(self, user: LoginEvent) -> bool:
+        raise NotImplementedError
+
 
 class PeeweeUserDatastore(
-    PeeweeDatastore, UserDatastore[PeeweeUser, PeeweeRole]
+    PeeweeDatastore, UserDatastore[PeeweeUser, PeeweeRole, PeeweeLoginEvent]
 ):
     def __init__(self, db: Any):
         """
@@ -92,7 +100,7 @@ class PeeweeUserDatastore(
             relation
         """
         PeeweeDatastore.__init__(self, db)
-        UserDatastore.__init__(self, PeeweeUser, PeeweeRole)
+        UserDatastore.__init__(self, PeeweeUser, PeeweeRole, PeeweeLoginEvent)
         self.UserRole = PeeweeUserRoles
 
     def find_user(
@@ -170,6 +178,12 @@ class PeeweeUserDatastore(
         :param role: The role to delete
         """
         self.delete(role)
+
+    def delete_history(self, history) -> None:
+        """Deletes the specified role.
+        :param history: The history to delete
+        """
+        self.delete(history)
 
     def find_or_create_role(self, name: str, **kwargs: Any) -> 'Role':
         """Returns a role matching the given name or creates it with any

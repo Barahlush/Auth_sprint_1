@@ -1,3 +1,4 @@
+import datetime
 from typing import cast
 
 from flask import (
@@ -19,7 +20,7 @@ from flask_jwt_extended import (
 from loguru import logger
 
 from src.core.jwt import create_token_pair, roles_required
-from src.core.models import User
+from src.core.models import LoginEvent, User
 
 views = Blueprint('views', __name__, url_prefix='/auth')
 
@@ -64,7 +65,16 @@ def login() -> Response:
             render_template('security/login_user.html', error_msg=error_msg),
             401,
         )
-
+    history = request.headers.get('User-Agent')
+    registered = datetime.datetime.now().strftime('%Y-%m-%d')
+    logger.info(history)
+    user_history = LoginEvent(
+        history=history,
+        registered=registered,
+        user=User.get(id=user),  # type: ignore
+    )
+    user_history.save()
+    logger.info(f'user_history: {user_history}')
     next_url = request.args.get('next', url_for('views.index'))
     response = cast(Response, redirect(next_url))
 
@@ -120,9 +130,13 @@ def admin() -> Response:
 @jwt_required()  # type: ignore
 def test_page() -> Response:
     current_user = get_current_user()
+    log_event = LoginEvent.get(LoginEvent.user == current_user)  # type: ignore
     return make_response(
         render_template_string(
-            'Hello on test page.' f'Current user {current_user}'
+            f'Hello on admin page. Current user '
+            f'{current_user.email} password is {current_user.password}<br>'
+            f'<h2>User browser: {log_event.history}.<br> '
+            f'User date register: {log_event.registered}</h2>'
         ),
         200,
     )

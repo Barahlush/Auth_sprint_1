@@ -3,6 +3,7 @@ from typing import Any
 from peewee import (
     BooleanField,
     CharField,
+    DateTimeField,
     ForeignKeyField,
     Model,
     TextField,
@@ -40,6 +41,15 @@ class UserRoles(Model):
 
     def get_permissions(self) -> Any:
         return self.role.get_permissions()
+
+    class Meta:
+        database = db
+
+
+class LoginEvent(Model):
+    history = TextField()
+    registered = DateTimeField()
+    user = ForeignKeyField(User, null=True)
 
     class Meta:
         database = db
