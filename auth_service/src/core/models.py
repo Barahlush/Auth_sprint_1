@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any
 
 from peewee import (
@@ -48,7 +49,7 @@ class UserRoles(Model):
 
 class LoginEvent(Model):
     history = TextField()
-    registered = DateTimeField()
+    registered = DateTimeField(default=datetime.now)
     user = ForeignKeyField(User, null=True)
 
     class Meta:

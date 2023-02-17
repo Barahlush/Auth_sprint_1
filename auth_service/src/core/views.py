@@ -1,4 +1,3 @@
-import datetime
 from typing import cast
 
 from flask import (
@@ -66,11 +65,9 @@ def login() -> Response:
             401,
         )
     history = request.headers.get('User-Agent')
-    registered = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
     logger.info(history)
     user_history = LoginEvent(
         history=history,
-        registered=registered,
         user=User.get(id=user),  # type: ignore
     )
     user_history.save()
@@ -131,11 +128,11 @@ def admin() -> Response:
 def test_page() -> Response:
     current_user = get_current_user()
     user_history = (
-        LoginEvent.select()
+        LoginEvent.select()  # type: ignore
         .where(LoginEvent.user == current_user)
         .order_by(LoginEvent.registered)
         .limit(10)
-    )  # type: ignore
+    )
     return make_response(
         render_template('security/history.html', user_history=user_history),
         401,
