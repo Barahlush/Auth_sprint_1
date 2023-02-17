@@ -66,7 +66,7 @@ def login() -> Response:
             401,
         )
     history = request.headers.get('User-Agent')
-    registered = datetime.datetime.now().strftime('%Y-%m-%d')
+    registered = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
     logger.info(history)
     user_history = LoginEvent(
         history=history,
@@ -126,19 +126,19 @@ def admin() -> Response:
     )
 
 
-@views.route('/test')
+@views.route('/history')
 @jwt_required()  # type: ignore
 def test_page() -> Response:
     current_user = get_current_user()
-    log_event = LoginEvent.get(LoginEvent.user == current_user)  # type: ignore
+    user_history = (
+        LoginEvent.select()
+        .where(LoginEvent.user == current_user)
+        .order_by(LoginEvent.registered)
+        .limit(10)
+    )  # type: ignore
     return make_response(
-        render_template_string(
-            f'Hello on admin page. Current user '
-            f'{current_user.email} password is {current_user.password}<br>'
-            f'<h2>User browser: {log_event.history}.<br> '
-            f'User date register: {log_event.registered}</h2>'
-        ),
-        200,
+        render_template('security/history.html', user_history=user_history),
+        401,
     )
 
 

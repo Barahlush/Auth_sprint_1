@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Your history</h3>
+</div>
+    {% for event in user_history %}
+        Place of login: {{ event.history }}<br>
+
+        Registered date: {{ event.registered }}
+    <hr>
+    {% endfor %}
+{% endblock %}
