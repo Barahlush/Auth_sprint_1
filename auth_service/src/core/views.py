@@ -12,12 +12,17 @@ from flask import (
 from flask_jwt_extended import (
     get_current_user,
     jwt_required,
-    set_access_cookies,
-    set_refresh_cookies,
+    unset_jwt_cookies,
 )
 from loguru import logger
 
-from src.core.jwt import create_token_pair, roles_required
+from src.core.jwt import (
+    create_token_pair,
+    revoke_all_user_tokens,
+    revoke_token,
+    roles_required,
+    set_token_cookies,
+)
 from src.core.models import User
 
 views = Blueprint('views', __name__, url_prefix='/auth')
@@ -68,9 +73,37 @@ def login() -> Response:
     response = cast(Response, redirect(next_url))
 
     access_token, refresh_token = create_token_pair(user)
-    set_access_cookies(response, access_token)
-    set_refresh_cookies(response, refresh_token)
+    set_token_cookies(response, access_token, refresh_token)
 
+    return response
+
+
+@views.route('/logout', methods=['POST'])
+@jwt_required()  # type: ignore
+def logout() -> Response:
+    response = make_response(redirect(url_for('views.login')))
+
+    # Отзыв access токена
+    if access_token := request.cookies.get('access_token_cookie'):
+        revoke_token(access_token)
+
+    # Отзыв refresh токена
+    if refresh_token := request.cookies.get('refresh_token_cookie'):
+        revoke_token(refresh_token)
+    logger.info('REVOKING TOKEN')
+    unset_jwt_cookies(response)
+
+    return response
+
+
+@views.route('/logout_all', methods=['POST'])
+@jwt_required()  # type: ignore
+def logout_all() -> Response:
+    response = make_response(redirect(url_for('views.login')))
+    logger.info('REVOKING ALL TOKENS')
+    current_user = get_current_user()
+    revoke_all_user_tokens(current_user)
+    unset_jwt_cookies(response)
     return response
 
 
@@ -96,8 +129,7 @@ def register() -> Response:
     response = cast(Response, redirect(next_url, 302))
 
     access_token, refresh_token = create_token_pair(user)
-    set_access_cookies(response, access_token)
-    set_refresh_cookies(response, access_token)
+    set_token_cookies(response, access_token, refresh_token)
 
     return response
 
@@ -139,8 +171,7 @@ def refresh() -> Response:
     response = cast(Response, redirect(next_url, 302))
 
     access_token, refresh_token = create_token_pair(current_user)
-    set_access_cookies(response, access_token)
-    set_refresh_cookies(response, refresh_token)
+    set_token_cookies(response, access_token, refresh_token)
     return response
 
 
