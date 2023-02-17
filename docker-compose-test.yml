@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  redis:
+    container_name: redis
+    image: redis:7.0.8
+    expose:
+      - "6379"
+    
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    env_file:
+      - .env
+      - .docker.env
+    expose:
+      - "5432"
+
+  auth_service:
+    build: auth_service
+    restart: always
+    container_name: auth_service
+    image: auth_service_image
+    volumes:
+      - ./auth_service:/opt/app
+    env_file:
+      - .env
+    expose: 
+      - "5000"
+    depends_on:
+      - postgres
+      - redis
+
+  nginx:
+    image: nginx:1.19.2
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/configs:/etc/nginx/conf.d:ro
+    depends_on:
+      - auth_service
+    ports:
+      - "80:80"
+
+  test_service:
+    image: auth_service_image
+    container_name: test_service
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./tests/functional/logs:/opt/app/functional/logs
+      - ./tests:/opt/app
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/opt/app/functional:$PYTHONPATH
+    depends_on:
+      - postgres
+      - redis
+      - auth_service
+      - nginx
+    entrypoint: >
+      sh -c "python functional/utils/wait_for_postgres.py
+      && python functional/utils/wait_for_redis.py
+      && pytest functional/src"
