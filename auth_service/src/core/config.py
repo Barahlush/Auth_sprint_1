@@ -1,6 +1,7 @@
 import datetime
 import os
 from dataclasses import dataclass
+from secrets import token_urlsafe
 
 import dotenv
 
@@ -30,7 +31,9 @@ APP_PORT = int(os.environ.get('APP_PORT', 5000))
 
 
 APP_CONFIG = {
-    'JWT_SECRET_KEY': os.getenv('JWT_SECRET_KEY', 'local-secret'),
+    'JWT_SECRET_KEY': token_urlsafe(
+        8
+    ),  # os.getenv('JWT_SECRET_KEY', 'local-secret'),
     'JWT_TOKEN_LOCATION': ['cookies'],
     'JWT_ACCESS_TOKEN_EXPIRES': datetime.timedelta(hours=12),
     'JWT_COOKIE_SECURE': False,  # set to True in production

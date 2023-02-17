@@ -71,4 +71,4 @@ tests/requirements.txt
 
 # DB files
 *.db
-*/postgres_data
+postgres_data

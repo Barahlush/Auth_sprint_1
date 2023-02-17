@@ -88,11 +88,23 @@ def unauthorized_callback(_: str) -> Response:
     )
 
 
+@jwt.invalid_token_loader
+def token_verification_failed_callback(_msg: str) -> Response:
+    logger.info('TOKEN VERIFICATION FAILED')
+    logger.info(request.path)
+    return cast(
+        Response,
+        redirect(
+            url_for('views.login', next=request.path),
+        ),
+    )
+
+
 @jwt.user_lookup_loader
 def user_lookup_callback(
     _jwt_header: dict[str, str | int], jwt_data: dict[str, str | int]
 ) -> User:
-    identity = int(jwt_data['sub'])
+    identity = str(jwt_data['sub'])
     return cast(User, User.get_by_id(identity))   # type: ignore
 
 

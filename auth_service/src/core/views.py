@@ -6,6 +6,7 @@ from flask import (
     make_response,
     redirect,
     render_template,
+    render_template_string,
     request,
     url_for,
 )
@@ -18,7 +19,7 @@ from flask_jwt_extended import (
 from loguru import logger
 
 from src.core.jwt import create_token_pair, roles_required
-from src.core.models import User
+from src.core.models import LoginEvent, User
 
 views = Blueprint('views', __name__, url_prefix='/auth')
 
@@ -63,7 +64,14 @@ def login() -> Response:
             render_template('security/login_user.html', error_msg=error_msg),
             401,
         )
-
+    history = request.headers.get('User-Agent')
+    logger.info(history)
+    user_history = LoginEvent(
+        history=history,
+        user=User.get(id=user),  # type: ignore
+    )
+    user_history.save()
+    logger.info(f'user_history: {user_history}')
     next_url = request.args.get('next', url_for('views.index'))
     response = cast(Response, redirect(next_url))
 
@@ -107,7 +115,7 @@ def register() -> Response:
 def admin() -> Response:
     current_user = get_current_user()
     return make_response(
-        render_template(
+        render_template_string(
             f'Hello on admin page. Current user '
             f'{current_user.email} password is {current_user.password}'
         ),
@@ -115,14 +123,25 @@ def admin() -> Response:
     )
 
 
-@views.route('/test')
+@views.route('/history')
 @jwt_required()  # type: ignore
 def test_page() -> Response:
     current_user = get_current_user()
-    return make_response(
-        render_template('Hello on test page.' f'Current user {current_user}'),
-        200,
+    user_history = (
+        LoginEvent.select()  # type: ignore
+        .where(LoginEvent.user == current_user)
+        .order_by(LoginEvent.registered)
+        .limit(10)
     )
+    return make_response(
+        render_template('security/history.html', user_history=user_history),
+        401,
+    )
+
+
+@views.route('/')
+def index() -> Response:
+    return make_response(render_template('security/index.html'), 200)
 
 
 @views.route('/refresh')
@@ -142,35 +161,3 @@ def refresh() -> Response:
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
     return response
-
-
-@views.route('/')
-@jwt_required()  # type: ignore
-def index() -> Response:
-    welcome_string = 'Welcome!'
-    current_user = get_current_user()
-    contex = {}
-    if current_user:
-        contex.update({'user': current_user})
-        try:
-            name = current_user.name
-            email = current_user.email
-            contex.update({'"user_name': name})
-            contex.update({'user_email': email})
-            welcome_string = f'Welcome back, {current_user.name}!'
-        except AttributeError:
-            welcome_string = 'Welcome back!'
-    contex.update({'welcome_string': welcome_string})
-    return make_response(
-        render_template('security/index.html', contex=contex), 200
-    )
-
-
-@views.route('/profile')
-@jwt_required()  # type: ignore
-def profile() -> Response:
-    current_user = get_current_user()
-    return make_response(
-        render_template('security/profile.html', current_user=current_user),
-        200,
-    )
