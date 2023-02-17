@@ -41,3 +41,28 @@ roles = [
         },
     },
 ]
+
+users_table = """
+CREATE TABLE IF NOT EXISTS user 
+(id uuid PRIMARY KEY, email text, password text, 
+fs_uniquifier text not null, active bool)
+"""
+
+roles_table = """
+CREATE TABLE IF NOT EXISTS role 
+(id uuid PRIMARY KEY, name text)
+"""
+
+user_roles_table = """
+CREATE TABLE IF NOT EXISTS user_roles 
+(id uuid PRIMARY KEY, 
+user_id uuid NOT NULL REFERENCES users_database.user(id) ON DELETE CASCADE,
+role_id uuid NOT NULL REFERENCES users_database.role(id) ON DELETE CASCADE,
+name text)
+"""
+
+login_events_table = """
+CREATE TABLE IF NOT EXISTS login_event 
+(id uuid PRIMARY KEY, history text, registered timestamp with time zone, 
+user_id uuid NOT NULL REFERENCES users_database.user(id) ON DELETE CASCADE)
+"""

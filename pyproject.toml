@@ -54,7 +54,8 @@ exclude = [
     "auth_service/src/db/datastore.py",
     "auth_service/src/core/views.py",
     "venv",
-    "postgres_data"
+    "postgres_data",
+    "tests"
 ]
 
 
