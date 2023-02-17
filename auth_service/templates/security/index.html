@@ -13,4 +13,21 @@
 </nav>
 {% endblock %} {%block content%}
 <h1 style="font-size: 2em">Auth Index Page</h1>
+<div class="container has-text-centered">
+  <h1 class="title" style="font-size: 80px; color: #b86ef0">
+    {{ contex.welcome_string }}
+  </h1>
+  {% if contex.user and contex.user_email %}
+  <h2 class="subtitle" style="color: black">
+    Your email: {{ contex.user_email }}
+  </h2>
+  {% endif %}
+  <br />
+  <h2 class="subtitle" style="color: black; font-size: 30px">
+    <a style="color: #7d7af0" href="{{ url_for('views.profile') }}">Profile</a>
+    |
+    <a style="color: #7d7af0" href='{{url_for("views.admin")}}'>Admin Panel</a>
+  </h2>
+</div>
+
 {% endblock %}
