@@ -52,9 +52,9 @@ strict = true
 implicit_reexport = true
 exclude = [
     "auth_service/src/db/datastore.py",
-    "venv"
+    "venv",
+    "postgres_data"
 ]
-ignore = ['PYSEC-2022-42969']
 
 
 [tool.ruff]

@@ -68,13 +68,15 @@ if __name__ == '__main__':
         )
         datastore.find_or_create_role(name='reader', permissions={'user-read'})
         # Create a user to test with
-        if not datastore.find_user(email='test@me.com'):
-            datastore.create_user(
-                email='test@me.com',
-                password='password',  # noqa
-                fs_uniquifier='text',
-                roles=['admin'],
-            )
+        if admin_user := datastore.find_user(email='test@me.com'):
+            datastore.delete_user(admin_user)
+        datastore.create_user(
+            user_id=1,
+            email='test@me.com',
+            password='password',  # noqa
+            fs_uniquifier='text',
+            roles=['admin'],
+        )
         admin.add_view(UserAdmin(User))
 
     app.run(host=APP_HOST, port=APP_PORT)

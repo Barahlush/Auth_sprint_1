@@ -2,6 +2,7 @@ import uuid
 from abc import abstractmethod
 from typing import Any, Generic, TypeVar
 
+from loguru import logger
 from peewee import Model
 
 from src.core.models import LoginEvent as PeeweeLoginEvent
@@ -35,7 +36,8 @@ class PeeweeDatastore(Datastore[Model]):
         super().__init__(db)
 
     def put(self, model: Model) -> Model:
-        model.save()
+        with self.db.atomic():
+            model.save()
         return model
 
     def delete(self, model: Model) -> None:
@@ -129,7 +131,7 @@ class PeeweeUserDatastore(
 
     def find_role(self, role):
         try:
-            return self.role_model.filter(name=role).get()
+            return self.role_model.get(name=role)
         except self.role_model.DoesNotExist:
             return None
 
@@ -138,8 +140,9 @@ class PeeweeUserDatastore(
         roles = kwargs.pop('roles', [])
         user = self.user_model(**kwargs)
         user = self.put(user)
+        logger.info(user)
         for role in roles:
-            self.add_role_to_user(user, role)
+            self.add_role_to_user(user, self.role_model.get(name=role))
         self.put(user)
         return user
 
@@ -191,17 +194,18 @@ class PeeweeUserDatastore(
         """
         return self.find_role(name) or self.create_role(name=name, **kwargs)
 
-    def add_role_to_user(self, user, role):
+    def add_role_to_user(self, user: User, role: Role):
         """Adds a role to a user.
         :param user: The user to manipulate
         :param role: The role to add to the user
         """
         result = self.UserRole.select().where(
-            self.UserRole.user == user.id, self.UserRole.role == role.id
+            self.UserRole.user == user, self.UserRole.role == role
         )
+        logger.info(result)
         if result.count():
             return False
-        self.put(self.UserRole.create(user=user.id, role=role.id))
+        self.put(self.UserRole.create(user=user, role=role))
         return True
 
     def remove_role_from_user(self, user, role):
