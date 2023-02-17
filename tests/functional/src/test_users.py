@@ -1,4 +1,11 @@
-from src.core.models import User
+from peewee import BooleanField, Model, TextField
+
+
+class User(Model):
+    email = TextField()
+    password = TextField()
+    fs_uniquifier = TextField(null=False)
+    active = BooleanField(default=True)
 
 
 def test_create_user(db):

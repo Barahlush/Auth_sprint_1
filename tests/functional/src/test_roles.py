@@ -1,4 +1,8 @@
-from src.core.models import Role
+from peewee import CharField, Model
+
+
+class Role(Model):
+    name = CharField(unique=True)
 
 
 def test_create_role(db):
