@@ -21,7 +21,7 @@ app = Flask(__name__)
 app.config |= APP_CONFIG
 csrf = CSRFProtect(app)
 
-admin = admin.Admin(app, name='Admin Panel')
+admin = admin.Admin(app, name='Admin Panel', url='/auth/admin')
 
 if __name__ == '__main__':
 
@@ -79,6 +79,6 @@ if __name__ == '__main__':
             fs_uniquifier='text',
             roles=['admin'],
         )
-        admin.add_view(UserAdmin(User))
+        admin.add_view(UserAdmin(User, endpoint='users'))
 
     app.run(host=APP_HOST, port=APP_PORT)
