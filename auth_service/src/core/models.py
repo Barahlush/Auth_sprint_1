@@ -1,3 +1,4 @@
+import secrets
 from datetime import datetime
 from typing import Any
 
@@ -25,7 +26,7 @@ class Role(Model):
 class User(Model):
     email = TextField()
     password = TextField()
-    fs_uniquifier = TextField(null=False)
+    fs_uniquifier = TextField(default=secrets.token_urlsafe(8))
     active = BooleanField(default=True)
 
     class Meta:

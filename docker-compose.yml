@@ -1,6 +1,4 @@
 version: '3'
-volumes:
-  postgres_data:
 
 services:
   redis:
@@ -19,7 +17,7 @@ services:
       - .env
       - .docker.env
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - ./postgres_data:/var/lib/postgresql/data/
     expose:
       - "5432"
 
