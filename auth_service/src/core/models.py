@@ -1,3 +1,4 @@
+import secrets
 from datetime import datetime
 from typing import Any
 
@@ -10,6 +11,7 @@ from peewee import (
     TextField,
 )
 
+from src.core.config import SALT_LENGTH
 from src.db.postgres import db
 
 
@@ -20,11 +22,13 @@ class Role(Model):
         database = db
 
 
-# N.B. order is important since Model also contains a get_id() -
-# we need the one from UserMixin.
+def generate_salt() -> str:
+    return secrets.token_urlsafe(SALT_LENGTH)
+
+
 class User(Model):
     email = TextField()
-    password = TextField()
+    password_hash = TextField()
     fs_uniquifier = TextField(null=False)
     active = BooleanField(default=True)
 
@@ -33,9 +37,6 @@ class User(Model):
 
 
 class UserRoles(Model):
-    # Because peewee does not come with built-in many-to-many
-    # relationships, we need this intermediary class to link
-    # user to roles.
     user = ForeignKeyField(User, related_name='roles')
     role = ForeignKeyField(Role, related_name='users')
     name = property(lambda self: self.role.name)

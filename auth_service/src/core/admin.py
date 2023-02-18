@@ -1,4 +1,5 @@
 from flask_admin.contrib.peewee import ModelView  # type: ignore
+from flask_admin.form import SecureForm  # type: ignore
 from peewee import CharField, ForeignKeyField, Model
 
 from src.core.models import User
@@ -19,4 +20,5 @@ class UserInfo(Model):
 
 
 class UserAdmin(ModelView):  # type: ignore
+    form_base_class = SecureForm
     inline_models = (UserInfo,)

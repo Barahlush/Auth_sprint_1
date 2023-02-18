@@ -23,6 +23,7 @@ from src.core.jwt import (
     set_token_cookies,
 )
 from src.core.models import LoginEvent, User
+from src.core.security import check_password, generate_salt, hash_password
 
 views = Blueprint('views', __name__, url_prefix='/auth')
 
@@ -54,12 +55,6 @@ def login() -> Response:
         )
 
     user: User = User.get(email=email)   # type: ignore
-
-    def check_password(user: User, password: str) -> bool:
-        """Небезопасная проверка пароля"""
-        logger.info(user.password)
-        logger.info(password)
-        return bool(user.password == password)
 
     if not user or not check_password(user, password):
         error_msg = 'Wrong username or password'
@@ -129,7 +124,21 @@ def register() -> Response:
     email = request.form.get('email', None)
     password = request.form.get('password', None)
 
-    user = User(name=username, email=email, password=password)
+    if not username or not email or not password:
+        error_msg = 'Enter the username and the password'
+        return make_response(
+            render_template('security/login_user.html', error_msg=error_msg),
+            401,
+        )
+
+    salt = generate_salt()
+    password_hash = hash_password(password, salt)
+    user = User(
+        name=username,
+        email=email,
+        password_hash=password_hash,
+        fs_uniquifier=salt,
+    )
     user.save()
     next_url = request.args.get('next', url_for('views.index'))
     response = cast(Response, redirect(next_url, 302))
@@ -142,7 +151,7 @@ def register() -> Response:
 
 @views.route('/history')
 @jwt_required()  # type: ignore
-def test_page() -> Response:
+def history_page() -> Response:
     current_user = get_current_user()
     user_history = (
         LoginEvent.select()  # type: ignore
