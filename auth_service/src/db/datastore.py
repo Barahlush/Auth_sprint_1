@@ -2,14 +2,17 @@ import uuid
 from abc import abstractmethod
 from typing import Any, Generic, TypeVar
 
+from loguru import logger
 from peewee import Model
 
+from src.core.models import LoginEvent as PeeweeLoginEvent
 from src.core.models import Role as PeeweeRole
 from src.core.models import User as PeeweeUser
 from src.core.models import UserRoles as PeeweeUserRoles
 
 Role = TypeVar('Role')
 User = TypeVar('User')
+LoginEvent = TypeVar('LoginEvent')
 
 AbstractModel = TypeVar('AbstractModel')
 
@@ -33,21 +36,24 @@ class PeeweeDatastore(Datastore[Model]):
         super().__init__(db)
 
     def put(self, model: Model) -> Model:
-        model.save()
+        with self.db.atomic():
+            model.save()
         return model
 
     def delete(self, model: Model) -> None:
         model.delete_instance(recursive=True)
 
 
-class UserDatastore(Generic[User, Role]):
+class UserDatastore(Generic[User, Role, LoginEvent]):
     def __init__(
         self,
-        user_model: type[User],
-        role_model: type[Role],
+        user_model: User,
+        role_model: Role,
+        history_model: LoginEvent,
     ):
         self.user_model = user_model
         self.role_model = role_model
+        self.history_model = history_model
 
     @abstractmethod
     def find_user(self, **kwargs: Any) -> User | None:
@@ -81,9 +87,13 @@ class UserDatastore(Generic[User, Role]):
     def delete_user(self, user: User) -> bool:
         raise NotImplementedError
 
+    @abstractmethod
+    def delete_history(self, user: LoginEvent) -> bool:
+        raise NotImplementedError
+
 
 class PeeweeUserDatastore(
-    PeeweeDatastore, UserDatastore[PeeweeUser, PeeweeRole]
+    PeeweeDatastore, UserDatastore[PeeweeUser, PeeweeRole, PeeweeLoginEvent]
 ):
     def __init__(self, db: Any):
         """
@@ -92,7 +102,7 @@ class PeeweeUserDatastore(
             relation
         """
         PeeweeDatastore.__init__(self, db)
-        UserDatastore.__init__(self, PeeweeUser, PeeweeRole)
+        UserDatastore.__init__(self, PeeweeUser, PeeweeRole, PeeweeLoginEvent)
         self.UserRole = PeeweeUserRoles
 
     def find_user(
@@ -121,7 +131,7 @@ class PeeweeUserDatastore(
 
     def find_role(self, role):
         try:
-            return self.role_model.filter(name=role).get()
+            return self.role_model.get(name=role)
         except self.role_model.DoesNotExist:
             return None
 
@@ -130,8 +140,9 @@ class PeeweeUserDatastore(
         roles = kwargs.pop('roles', [])
         user = self.user_model(**kwargs)
         user = self.put(user)
+        logger.info(user)
         for role in roles:
-            self.add_role_to_user(user, role)
+            self.add_role_to_user(user, self.role_model.get(name=role))
         self.put(user)
         return user
 
@@ -171,23 +182,30 @@ class PeeweeUserDatastore(
         """
         self.delete(role)
 
+    def delete_history(self, history) -> None:
+        """Deletes the specified role.
+        :param history: The history to delete
+        """
+        self.delete(history)
+
     def find_or_create_role(self, name: str, **kwargs: Any) -> 'Role':
         """Returns a role matching the given name or creates it with any
         additionally provided parameters.
         """
         return self.find_role(name) or self.create_role(name=name, **kwargs)
 
-    def add_role_to_user(self, user, role):
+    def add_role_to_user(self, user: User, role: Role):
         """Adds a role to a user.
         :param user: The user to manipulate
         :param role: The role to add to the user
         """
         result = self.UserRole.select().where(
-            self.UserRole.user == user.id, self.UserRole.role == role.id
+            self.UserRole.user == user, self.UserRole.role == role
         )
+        logger.info(result)
         if result.count():
             return False
-        self.put(self.UserRole.create(user=user.id, role=role.id))
+        self.put(self.UserRole.create(user=user, role=role))
         return True
 
     def remove_role_from_user(self, user, role):

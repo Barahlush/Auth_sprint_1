@@ -1851,26 +1851,26 @@ files = [
 
 [[package]]
 name = "types-peewee"
-version = "3.15.0.6"
+version = "3.15.0.5"
 description = "Typing stubs for peewee"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-peewee-3.15.0.6.tar.gz", hash = "sha256:a077cc8948b886688564fb31186234e203c13ab458bc4751642a8049eb6d9962"},
-    {file = "types_peewee-3.15.0.6-py3-none-any.whl", hash = "sha256:293f8fcce77029d793849446ef8c2c854f804c274754c30f8eb53a7778fab012"},
+    {file = "types-peewee-3.15.0.5.tar.gz", hash = "sha256:5a907a87317878c7684800fe3eee901ba22467dbc3dffbf110ee62fd0bfa0008"},
+    {file = "types_peewee-3.15.0.5-py3-none-any.whl", hash = "sha256:1323a3a2e3831754a9acaa1fdf395283c545fc74bae34b2ff78099a8a1379ce6"},
 ]
 
 [[package]]
 name = "types-psycopg2"
-version = "2.9.21.5"
+version = "2.9.21.4"
 description = "Typing stubs for psycopg2"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-psycopg2-2.9.21.5.tar.gz", hash = "sha256:93e436f5cc5e691f9f3004cef81675b8b5fab97689fc74d9d20f95bba80b3432"},
-    {file = "types_psycopg2-2.9.21.5-py3-none-any.whl", hash = "sha256:1757e5e9760aadc2d648d7b2a89d9733a1c5ee4ea6ef0d3fc90a7c4306556383"},
+    {file = "types-psycopg2-2.9.21.4.tar.gz", hash = "sha256:d43dda166a70d073ddac40718e06539836b5844c99b58ef8d4489a8df2edf5c0"},
+    {file = "types_psycopg2-2.9.21.4-py3-none-any.whl", hash = "sha256:6a05dca0856996aa37d7abe436751803bf47ec006cabbefea092e057f23bc95d"},
 ]
 
 [[package]]
@@ -1906,14 +1906,14 @@ types-pyOpenSSL = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "4.5.0"
+version = "4.4.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typing_extensions-4.5.0-py3-none-any.whl", hash = "sha256:fb33085c39dd998ac16d1431ebc293a8b3eedd00fd4a32de0ff79002c19511b4"},
-    {file = "typing_extensions-4.5.0.tar.gz", hash = "sha256:5cb5f4a79139d699607b3ef622a1dedafa84e115ab0024e0d9c044a9479ca7cb"},
+    {file = "typing_extensions-4.4.0-py3-none-any.whl", hash = "sha256:16fa4864408f655d35ec496218b85f79b3437c829e93320c7c9215ccfd92489e"},
+    {file = "typing_extensions-4.4.0.tar.gz", hash = "sha256:1511434bb92bf8dd198c12b1cc812e800d4181cfcb867674e0f8279cc93087aa"},
 ]
 
 [[package]]

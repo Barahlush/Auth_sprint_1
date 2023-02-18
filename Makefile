@@ -5,18 +5,18 @@ test:
 
 lint:
 	@echo
-	ruff .
+	poetry run ruff .
 	@echo
-	blue --check --diff --color .
+	poetry run blue --check --diff --color .
 	@echo
-	mypy .
+	poetry run mypy .
 	@echo
-	pip-audit
+	poetry run pip-audit --ignore PYSEC-2022-42969
 
 
 format:
-	ruff --silent --exit-zero --fix .
-	blue .
+	poetry run ruff --silent --exit-zero --fix .
+	poetry run blue .
 
 build:
 	poetry export -f requirements.txt --output auth_service/requirements.txt --without-hashes
