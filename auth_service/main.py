@@ -4,6 +4,7 @@ from dataclasses import asdict
 import flask_admin as admin  # type: ignore
 import psycopg2
 from flask import Flask
+from flask_wtf.csrf import CSRFProtect  # type: ignore
 from loguru import logger
 from psycopg2.errors import DuplicateDatabase
 from routers import not_auth
@@ -18,6 +19,7 @@ from src.db.postgres import db
 # Create app
 app = Flask(__name__)
 app.config |= APP_CONFIG
+csrf = CSRFProtect(app)
 
 admin = admin.Admin(app, name='Admin Panel')
 

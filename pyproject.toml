@@ -28,7 +28,8 @@ types-psycopg2 = "^2.9.21.4"
 flask-jwt-extended = "^4.4.4"
 redis = "^4.5.1"
 flask-admin = "^1.6.0"
-wtf-peewee = "^3.0.4"
+flask-wtf = "^1.1.1"
+types-redis = "^4.5.1.1"
 
 [tool.poetry.group.dev.dependencies]
 blue = "*"
@@ -52,9 +53,9 @@ strict = true
 implicit_reexport = true
 exclude = [
     "auth_service/src/db/datastore.py",
-    "auth_service/src/core/views.py",
     "venv",
-    "postgres_data"
+    "postgres_data",
+    "redis_data",
 ]
 
 
