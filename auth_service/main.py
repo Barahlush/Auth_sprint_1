@@ -4,6 +4,7 @@ from dataclasses import asdict
 import flask_admin as admin  # type: ignore
 import psycopg2
 from flask import Flask
+from flask_admin.menu import MenuLink  # type: ignore
 from flask_wtf.csrf import CSRFProtect  # type: ignore
 from loguru import logger
 from psycopg2.errors import DuplicateDatabase
@@ -22,7 +23,10 @@ app = Flask(__name__)
 app.config |= APP_CONFIG
 csrf = CSRFProtect(app)
 
-admin = admin.Admin(app, name='Admin Panel', url='/auth/admin')
+admin = admin.Admin(
+    app, name='Admin Panel', url='/auth/admin', template_mode='bootstrap3'
+)
+admin.add_link(MenuLink(name='Back to auth', url='/auth/profile'))
 
 if __name__ == '__main__':
 
