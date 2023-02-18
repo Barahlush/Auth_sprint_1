@@ -48,7 +48,7 @@ def test_logout(make_post_request):
     assert response.status_code == HTTPStatus.OK
 
     logout = make_post_request('/auth/logout', BaseData.login_data)
-    assert logout.status_code == 200
+    assert logout.status_code == HTTPStatus.OK
 
 
 def test_logout_all(make_post_request):
@@ -56,4 +56,4 @@ def test_logout_all(make_post_request):
     assert response.status_code == HTTPStatus.OK
 
     logout = make_post_request('/auth/logout_all', BaseData.login_data)
-    assert logout.status_code == 200
+    assert logout.status_code == HTTPStatus.OK

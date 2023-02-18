@@ -58,5 +58,6 @@ APP_CONFIG = {
     'JWT_SESSION_COOKIE': False,
     'JWT_JSON_KEY': 'access_token',
     'JWT_REFRESH_JSON_KEY': 'refresh_token',
+    'WTF_CSRF_ENABLED': False,
     'DEBUG': True,
 }
