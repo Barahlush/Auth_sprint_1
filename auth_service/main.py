@@ -12,6 +12,7 @@ from src.core.admin import UserAdmin, UserInfo
 from src.core.config import APP_CONFIG, APP_HOST, APP_PORT, POSTGRES_CONFIG
 from src.core.jwt import jwt
 from src.core.models import LoginEvent, Role, User, UserRoles
+from src.core.security import hash_password
 from src.core.views import views
 from src.db.datastore import PeeweeUserDatastore
 from src.db.postgres import db
@@ -75,7 +76,7 @@ if __name__ == '__main__':
         datastore.create_user(
             user_id=1,
             email='test@me.com',
-            password='password',  # noqa
+            password_hash=hash_password('password', 'text'),  # noqa
             fs_uniquifier='text',
             roles=['admin'],
         )
