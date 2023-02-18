@@ -72,3 +72,4 @@ tests/requirements.txt
 # DB files
 *.db
 postgres_data
+redis_data

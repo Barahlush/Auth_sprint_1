@@ -7,6 +7,19 @@
         <a href="{{ url_for('views.register') }}" class="navbar-item">
           Sign Up
         </a>
+        <form action="{{url_for('views.logout')}}" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button class="button is-block is-info is-large is-fullwidth">
+            Log out
+          </button>
+        </form>
+        <form action="{{url_for('views.logout_all')}}" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+          <button class="button is-block is-info is-large is-fullwidth">
+            Log out from all devices
+          </button>
+        </form>
       </div>
     </div>
   </div>
