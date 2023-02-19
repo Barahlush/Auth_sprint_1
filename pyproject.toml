@@ -57,7 +57,8 @@ exclude = [
     "venv",
     "postgres_data",
     "redis_data",
-    "auth_service/main.py"
+    "auth_service/main.py",
+    "auth_service/src/db/postgres.py"
 ]
 
 

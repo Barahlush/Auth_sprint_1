@@ -1,6 +1,8 @@
 from gevent import monkey
+from src.db.postgres import patch_psycopg2
 
 monkey.patch_all()
+patch_psycopg2()
 
 from contextlib import closing
 from dataclasses import asdict
