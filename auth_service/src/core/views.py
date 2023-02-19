@@ -22,10 +22,12 @@ from src.core.jwt import (
     create_token_pair,
     revoke_all_user_tokens,
     revoke_token,
+    roles_required,
     set_token_cookies,
 )
-from src.core.models import LoginEvent, User
+from src.core.models import LoginEvent
 from src.core.security import check_password, generate_salt, hash_password
+from src.db.datastore import datastore
 from src.utils.template_utils import navbar_items
 
 views = Blueprint('views', __name__, url_prefix='/auth')
@@ -50,6 +52,7 @@ def login() -> Response:
         )
     email = request.form.get('email', None)
     password = request.form.get('password', None)
+    remember_me = request.form.get('remember', False)
     if not email or not password:
         error_msg = 'Enter the username and the password'
         return make_response(
@@ -57,7 +60,7 @@ def login() -> Response:
             401,
         )
 
-    user: User = User.get(email=email)   # type: ignore
+    user = datastore.find_user(email=email)
 
     if not user or not check_password(user, password):
         error_msg = 'Wrong username or password'
@@ -69,7 +72,7 @@ def login() -> Response:
     logger.info(history)
     user_history = LoginEvent(
         history=history,
-        user=User.get(id=user),  # type: ignore
+        user=user,
     )
     user_history.save()
     logger.info(f'user_history: {user_history}')
@@ -77,13 +80,15 @@ def login() -> Response:
     response = cast(Response, redirect(next_url))
 
     access_token, refresh_token = create_token_pair(user)
-    set_token_cookies(response, access_token, refresh_token)
+    set_token_cookies(
+        response, access_token, refresh_token, remember=remember_me
+    )
 
     return response
 
 
 @views.route('/logout', methods=['POST'])
-@jwt_required()  # type: ignore
+@roles_required('user', 'admin')
 def logout() -> Response:
     response = make_response(redirect(url_for('views.login')))
 
@@ -101,7 +106,7 @@ def logout() -> Response:
 
 
 @views.route('/logout_all', methods=['POST'])
-@jwt_required()  # type: ignore
+@roles_required('user', 'admin')
 def logout_all() -> Response:
     response = make_response(redirect(url_for('views.login')))
     logger.info('REVOKING ALL TOKENS')
@@ -136,24 +141,22 @@ def register() -> Response:
 
     salt = generate_salt()
     password_hash = hash_password(password, salt)
-    user = User(
+    datastore.create_user(
         name=username,
         email=email,
         password_hash=password_hash,
         fs_uniquifier=salt,
+        roles=['user'],
     )
-    user.save()
     next_url = request.args.get('next', url_for('views.index'))
-    response = cast(Response, redirect(next_url, 302))
-
-    access_token, refresh_token = create_token_pair(user)
-    set_token_cookies(response, access_token, refresh_token)
-
-    return response
+    return make_response(
+        redirect(url_for('views.login', next=next_url)),
+        302,
+    )
 
 
 @views.route('/history')
-@jwt_required()  # type: ignore
+@roles_required('user', 'admin')
 def history() -> Response:
     current_user = get_current_user()
     user_history = (
@@ -164,12 +167,12 @@ def history() -> Response:
     )
     return make_response(
         render_template('security/history.html', user_history=user_history),
-        401,
+        200,
     )
 
 
 @views.route('/')
-@jwt_required()  # type: ignore
+@roles_required('user', 'admin')
 def index() -> Response:
     welcome_string = 'Welcome!'
     current_user = get_current_user()
@@ -191,7 +194,7 @@ def index() -> Response:
 
 
 @views.route('/profile')
-@jwt_required()  # type: ignore
+@roles_required('user', 'admin')
 def profile() -> Response:
     current_user = get_current_user()
     return make_response(
@@ -212,6 +215,9 @@ def refresh() -> Response:
     current_user = get_current_user()
     next_url = request.args.get('next', url_for('views.index'))
     response = cast(Response, redirect(next_url, 302))
+
+    if refresh_token := request.cookies.get('refresh_token_cookie'):
+        revoke_token(refresh_token)
 
     access_token, refresh_token = create_token_pair(current_user)
     set_token_cookies(response, access_token, refresh_token)

@@ -15,7 +15,7 @@ from src.core.jwt import jwt
 from src.core.models import LoginEvent, Role, User, UserRoles
 from src.core.security import hash_password
 from src.core.views import views
-from src.db.datastore import PeeweeUserDatastore
+from src.db.datastore import datastore
 from src.db.postgres import db
 
 # Create app
@@ -52,7 +52,6 @@ if __name__ == '__main__':
         app.register_blueprint(views)
         app.register_blueprint(not_auth)
         jwt.init_app(app)
-        datastore = PeeweeUserDatastore(db)
 
         db.create_tables(
             [User, Role, UserRoles, UserInfo, LoginEvent], safe=True
@@ -84,6 +83,8 @@ if __name__ == '__main__':
             fs_uniquifier='text',
             roles=['admin'],
         )
-        admin.add_view(UserAdmin(User, endpoint='users'))
+        admin_view = UserAdmin(User, endpoint='users')
+        admin.add_view(admin_view)
+        csrf.exempt(admin_view.blueprint)
 
     app.run(host=APP_HOST, port=APP_PORT)

@@ -63,8 +63,7 @@ def roles_required(
                         return fn(*args, **kwargs)
             except JWTExtendedException:
                 logger.info(
-                    'Failed to validate jwt and/or role: {claims}',
-                    claims=claims,
+                    'Failed to validate jwt and/or role.',
                 )
             return cast(
                 Response,
@@ -216,13 +215,14 @@ def revoked_token_callback(
     Returns:
         Response: Ответ браузеру
     """
-    logger.info('TOKEN REVOKED')
-    return cast(
-        Response,
+    response = make_response(
         redirect(
             url_for('views.login', next=request.path),
         ),
+        302,
     )
+    unset_jwt_cookies(response)
+    return response
 
 
 @jwt.expired_token_loader
