@@ -1,5 +1,6 @@
 import datetime
 import os
+from distutils.util import strtobool
 from secrets import token_urlsafe
 
 import dotenv
@@ -41,8 +42,8 @@ REDIS_CONFIG = RedisConfig(
 
 SALT_LENGTH = 16
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-APP_HOST: str = os.environ.get('APP_HOST', '0.0.0.0')   # noqa
-APP_PORT: int = int(os.environ.get('APP_PORT', 5000))
+APP_HOST = os.environ.get('APP_HOST', '0.0.0.0')   # noqa
+APP_PORT = int(os.environ.get('APP_PORT', 5000))
 
 
 APP_CONFIG = {
@@ -56,6 +57,8 @@ APP_CONFIG = {
     'JWT_SESSION_COOKIE': False,
     'JWT_JSON_KEY': os.getenv('JWT_JSON_KEY', 'access_token'),
     'JWT_REFRESH_JSON_KEY': os.getenv('JWT_REFRESH_JSON_KEY', 'refresh_token'),
-    'WTF_CSRF_ENABLED': False,  # set to True in production
+    'WTF_CSRF_ENABLED': strtobool(
+        os.getenv('WTF_CSRF_ENABLED', 'false')
+    ),  # set to True in production
     'DEBUG': True,
 }
