@@ -35,4 +35,4 @@ class UserAdmin(ModelView):  # type: ignore
         for role in current_user.roles:
             if role.name == 'admin':
                 return True
-        return True
+        return False
