@@ -1,28 +1,26 @@
 import datetime
 import os
-from dataclasses import dataclass
 from secrets import token_urlsafe
 
 import dotenv
+from pydantic import BaseModel
 
 dotenv.load_dotenv()
 
 
-@dataclass
-class PostgresConfig:
-    database: str
-    user: str
-    password: str
-    host: str
-    port: int
+class PostgresConfig(BaseModel):
+    database: str | None = None
+    user: str | None = None
+    password: str | None = None
+    host: str | None = None
+    port: int | None = None
 
 
-@dataclass
-class RedisConfig:
-    host: str
-    port: int
-    db: int
-    password: str
+class RedisConfig(BaseModel):
+    host: str | None = None
+    port: int | None = None
+    db: int | None = None
+    password: str | None = None
     decode_responses: bool = True
 
 
@@ -41,22 +39,22 @@ REDIS_CONFIG = RedisConfig(
     password=os.environ.get('REDIS_PASSWORD', ''),
 )
 
-
+SALT_LENGTH = 16
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-APP_HOST = os.environ.get('APP_HOST', '0.0.0.0')   # noqa
-APP_PORT = int(os.environ.get('APP_PORT', 5000))
+APP_HOST: str = os.environ.get('APP_HOST', '0.0.0.0')   # noqa
+APP_PORT: int = int(os.environ.get('APP_PORT', 5000))
 
 
 APP_CONFIG = {
-    'SECRET_KEY': os.getenv('SECRET_KEY', token_urlsafe(8)),
-    'JWT_SECRET_KEY': os.getenv('SECRET_KEY', token_urlsafe(8)),
+    'SECRET_KEY': os.getenv('SECRET_KEY', token_urlsafe(SALT_LENGTH)),
+    'JWT_SECRET_KEY': os.getenv('SECRET_KEY', token_urlsafe(SALT_LENGTH)),
     'JWT_TOKEN_LOCATION': ['cookies'],
     'JWT_ACCESS_TOKEN_EXPIRES': datetime.timedelta(hours=12),
     'JWT_COOKIE_SECURE': False,  # set to True in production
     'JWT_REFRESH_TOKEN_EXPIRES': datetime.timedelta(days=10),
     'JWT_COOKIE_CSRF_PROTECT': False,
     'JWT_SESSION_COOKIE': False,
-    'JWT_JSON_KEY': 'access_token',
-    'JWT_REFRESH_JSON_KEY': 'refresh_token',
+    'JWT_JSON_KEY': os.getenv('JWT_JSON_KEY', 'access_token'),
+    'JWT_REFRESH_JSON_KEY': os.getenv('JWT_REFRESH_JSON_KEY', 'refresh_token'),
     'DEBUG': True,
 }

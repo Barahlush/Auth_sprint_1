@@ -1,20 +1,12 @@
 
 services:
 
-  auth_service:
-    ports:
-      - "8000:8000"
-    env_file:
-      - tests/.docker.env
-
   tests:
     build: ./tests/
     depends_on:
       - async_api
+      - postgres
+      - redis
     env_file:
-      - .env
-      - .docker.env
-
-  redis:
-    ports:
-      - "6379:6379"
+      - ./tests/.env
+      - ./tests/.docker.env

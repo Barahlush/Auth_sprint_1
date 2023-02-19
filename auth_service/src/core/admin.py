@@ -1,4 +1,7 @@
 from flask_admin.contrib.peewee import ModelView  # type: ignore
+from flask_admin.form import SecureForm  # type: ignore
+from flask_jwt_extended import get_current_user, jwt_required
+from loguru import logger
 from peewee import CharField, ForeignKeyField, Model
 
 from src.core.models import User
@@ -19,4 +22,17 @@ class UserInfo(Model):
 
 
 class UserAdmin(ModelView):  # type: ignore
+    form_base_class = SecureForm
     inline_models = (UserInfo,)
+    column_exclude_list = ('password_hash',)
+
+    @jwt_required()   # type: ignore
+    def is_accessible(self) -> bool:
+        logger.info('Checking access to admin panel')
+        current_user = get_current_user()
+        if not current_user:
+            return False
+        for role in current_user.roles:
+            if role.name == 'admin':
+                return True
+        return False

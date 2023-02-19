@@ -13,7 +13,9 @@ from flask_jwt_extended import (
     get_current_user,
     jwt_required,
     unset_jwt_cookies,
+    verify_jwt_in_request,
 )
+from flask_wtf.csrf import generate_csrf  # type: ignore
 from loguru import logger
 
 from src.core.jwt import (
@@ -23,6 +25,8 @@ from src.core.jwt import (
     set_token_cookies,
 )
 from src.core.models import LoginEvent, User
+from src.core.security import check_password, generate_salt, hash_password
+from src.utils.template_utils import navbar_items
 
 views = Blueprint('views', __name__, url_prefix='/auth')
 
@@ -54,12 +58,6 @@ def login() -> Response:
         )
 
     user: User = User.get(email=email)   # type: ignore
-
-    def check_password(user: User, password: str) -> bool:
-        """Небезопасная проверка пароля"""
-        logger.info(user.password)
-        logger.info(password)
-        return bool(user.password == password)
 
     if not user or not check_password(user, password):
         error_msg = 'Wrong username or password'
@@ -129,7 +127,21 @@ def register() -> Response:
     email = request.form.get('email', None)
     password = request.form.get('password', None)
 
-    user = User(name=username, email=email, password=password)
+    if not username or not email or not password:
+        error_msg = 'Enter the username and the password'
+        return make_response(
+            render_template('security/login_user.html', error_msg=error_msg),
+            401,
+        )
+
+    salt = generate_salt()
+    password_hash = hash_password(password, salt)
+    user = User(
+        name=username,
+        email=email,
+        password_hash=password_hash,
+        fs_uniquifier=salt,
+    )
     user.save()
     next_url = request.args.get('next', url_for('views.index'))
     response = cast(Response, redirect(next_url, 302))
@@ -142,7 +154,7 @@ def register() -> Response:
 
 @views.route('/history')
 @jwt_required()  # type: ignore
-def test_page() -> Response:
+def history() -> Response:
     current_user = get_current_user()
     user_history = (
         LoginEvent.select()  # type: ignore
@@ -204,3 +216,28 @@ def refresh() -> Response:
     access_token, refresh_token = create_token_pair(current_user)
     set_token_cookies(response, access_token, refresh_token)
     return response
+
+
+@views.context_processor
+def inject_navbar() -> dict[str, list[str]]:
+    verify_jwt_in_request(optional=True)
+    current_user = get_current_user()
+    csrf_token = generate_csrf()
+
+    navbar = []
+    if not current_user:
+        logger.info('ANONIM')
+        for item in navbar_items:
+            item.init()
+            if 'anon' in item.roles:
+                is_active = item.href == request.path
+                navbar.append(item.to_html(csrf_token, is_active))
+        return {'navbar_items': navbar}
+    logger.info('AUTHORIZED')
+    for item in navbar_items:
+        item.init()
+        for role in current_user.roles:
+            if role.name in item.roles:
+                is_active = item.href == request.path
+                navbar.append(item.to_html(csrf_token, is_active))
+    return {'navbar_items': navbar}
