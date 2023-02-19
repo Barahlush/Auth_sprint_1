@@ -81,7 +81,8 @@ class RedisTokenBlocklist(TokenBlocklist):
             return True
         logger.info(self.redis.get(user_identifier))
         logger.info(user_identifier)
-        if revoke_datetime := float(self.redis.get(user_identifier)):
+        if revoke_datetime := self.redis.get(user_identifier):
+            revoke_datetime = float(revoke_datetime)
             return bool(token_init_time < revoke_datetime)
 
         return False
