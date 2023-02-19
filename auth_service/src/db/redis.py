@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from dataclasses import asdict
 from datetime import datetime
 
 import redis
@@ -81,10 +80,11 @@ class RedisTokenBlocklist(TokenBlocklist):
             return True
         logger.info(self.redis.get(user_identifier))
         logger.info(user_identifier)
-        if revoke_datetime := float(self.redis.get(user_identifier)):
+        if revoke_datetime := self.redis.get(user_identifier):
+            revoke_datetime = float(revoke_datetime)
             return bool(token_init_time < revoke_datetime)
 
         return False
 
 
-jwt_redis_blocklist = RedisTokenBlocklist(asdict(REDIS_CONFIG))
+jwt_redis_blocklist = RedisTokenBlocklist(dict(REDIS_CONFIG))

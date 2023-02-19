@@ -57,6 +57,7 @@ exclude = [
     "venv",
     "postgres_data",
     "redis_data",
+    "tests"
 ]
 
 

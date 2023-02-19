@@ -1,28 +1,26 @@
 import datetime
 import os
-from dataclasses import dataclass
 from secrets import token_urlsafe
 
 import dotenv
+from pydantic import BaseModel
 
 dotenv.load_dotenv()
 
 
-@dataclass
-class PostgresConfig:
-    database: str
-    user: str
-    password: str
-    host: str
-    port: int
+class PostgresConfig(BaseModel):
+    database: str | None = None
+    user: str | None = None
+    password: str | None = None
+    host: str | None = None
+    port: int | None = None
 
 
-@dataclass
-class RedisConfig:
-    host: str
-    port: int
-    db: int
-    password: str
+class RedisConfig(BaseModel):
+    host: str | None = None
+    port: int | None = None
+    db: int | None = None
+    password: str | None = None
     decode_responses: bool = True
 
 
