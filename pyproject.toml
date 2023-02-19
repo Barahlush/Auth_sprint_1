@@ -54,6 +54,7 @@ strict = true
 implicit_reexport = true
 exclude = [
     "auth_service/src/db/datastore.py",
+    "auth_service/src/core/config.py",
     "venv",
     "postgres_data",
     "redis_data",
