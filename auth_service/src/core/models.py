@@ -1,4 +1,3 @@
-import secrets
 from datetime import datetime
 from typing import Any
 
@@ -11,7 +10,6 @@ from peewee import (
     TextField,
 )
 
-from src.core.config import SALT_LENGTH
 from src.db.postgres import db
 
 
@@ -20,10 +18,6 @@ class Role(Model):
 
     class Meta:
         database = db
-
-
-def generate_salt() -> str:
-    return secrets.token_urlsafe(SALT_LENGTH)
 
 
 class User(Model):
