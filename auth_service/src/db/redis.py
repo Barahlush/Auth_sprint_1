@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from dataclasses import asdict
 from datetime import datetime
 
 import redis
@@ -88,4 +87,4 @@ class RedisTokenBlocklist(TokenBlocklist):
         return False
 
 
-jwt_redis_blocklist = RedisTokenBlocklist(asdict(REDIS_CONFIG))
+jwt_redis_blocklist = RedisTokenBlocklist(dict(REDIS_CONFIG))

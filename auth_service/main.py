@@ -1,5 +1,4 @@
 from contextlib import closing
-from dataclasses import asdict
 
 import flask_admin as admin  # type: ignore
 import psycopg2
@@ -47,7 +46,7 @@ if __name__ == '__main__':
 
     # Setup app and db
     with app.app_context():
-        db.init(**asdict(POSTGRES_CONFIG))
+        db.init(**dict(POSTGRES_CONFIG))
         logger.info('Connected to database {}', POSTGRES_CONFIG.database)
         app.register_blueprint(views)
         app.register_blueprint(not_auth)
