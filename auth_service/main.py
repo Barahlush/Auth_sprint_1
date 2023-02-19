@@ -3,6 +3,7 @@ from contextlib import closing
 import flask_admin as admin  # type: ignore
 import psycopg2
 from flask import Flask
+from flask_admin.menu import MenuLink  # type: ignore
 from flask_wtf.csrf import CSRFProtect  # type: ignore
 from loguru import logger
 from psycopg2.errors import DuplicateDatabase
@@ -11,6 +12,7 @@ from src.core.admin import UserAdmin, UserInfo
 from src.core.config import APP_CONFIG, APP_HOST, APP_PORT, POSTGRES_CONFIG
 from src.core.jwt import jwt
 from src.core.models import LoginEvent, Role, User, UserRoles
+from src.core.security import hash_password
 from src.core.views import views
 from src.db.datastore import PeeweeUserDatastore
 from src.db.postgres import db
@@ -20,7 +22,10 @@ app = Flask(__name__)
 app.config |= APP_CONFIG
 csrf = CSRFProtect(app)
 
-admin = admin.Admin(app, name='Admin Panel', url='/auth/admin')
+admin = admin.Admin(
+    app, name='Admin Panel', url='/auth/admin', template_mode='bootstrap3'
+)
+admin.add_link(MenuLink(name='Back to auth', url='/auth/profile'))
 
 if __name__ == '__main__':
 
@@ -74,7 +79,7 @@ if __name__ == '__main__':
         datastore.create_user(
             user_id=1,
             email='test@me.com',
-            password='password',  # noqa
+            password_hash=hash_password('password', 'text'),  # noqa
             fs_uniquifier='text',
             roles=['admin'],
         )
