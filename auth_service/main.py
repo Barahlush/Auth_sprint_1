@@ -1,3 +1,7 @@
+from gevent import monkey
+
+monkey.patch_all()
+
 from contextlib import closing
 from dataclasses import asdict
 
