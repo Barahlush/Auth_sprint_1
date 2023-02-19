@@ -2,7 +2,7 @@ from collections.abc import Callable
 from functools import wraps
 from typing import ParamSpec, cast
 
-from flask import Response, redirect, request, url_for
+from flask import Response, make_response, redirect, request, url_for
 from flask_jwt_extended import (
     JWTManager,
     create_access_token,
@@ -11,6 +11,7 @@ from flask_jwt_extended import (
     get_jwt,
     set_access_cookies,
     set_refresh_cookies,
+    unset_jwt_cookies,
     verify_jwt_in_request,
 )
 from flask_jwt_extended.exceptions import JWTExtendedException
@@ -141,13 +142,11 @@ def token_verification_failed_callback(_msg: str) -> Response:
     """
     logger.info('TOKEN VERIFICATION FAILED {msg}', msg=_msg)
     logger.info(request.path)
-
-    return cast(
-        Response,
-        redirect(
-            url_for('views.login', next=request.path),
-        ),
+    response = make_response(
+        redirect(url_for('views.login', next=request.path)), 302
     )
+    unset_jwt_cookies(response)
+    return response
 
 
 @jwt.token_in_blocklist_loader
