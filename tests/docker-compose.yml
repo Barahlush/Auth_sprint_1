@@ -1,10 +1,6 @@
 
 services:
 
-  auth_service:
-    environment:
-      - WTF_CSRF_ENABLED=False
-
   tests:
     build: ./tests/
     depends_on:
