@@ -8,7 +8,7 @@ from flask_wtf.csrf import CSRFProtect  # type: ignore
 from loguru import logger
 from psycopg2.errors import DuplicateDatabase
 from routers import not_auth
-from src.core.admin import UserAdmin, UserInfo
+from src.core.admin import RoleAdmin, RoleInfo, UserAdmin, UserInfo
 from src.core.config import APP_CONFIG, APP_HOST, APP_PORT, POSTGRES_CONFIG
 from src.core.jwt import jwt
 from src.core.models import LoginEvent, Role, User, UserRoles
@@ -54,7 +54,7 @@ if __name__ == '__main__':
         datastore = PeeweeUserDatastore(db)
 
         db.create_tables(
-            [User, Role, UserRoles, UserInfo, LoginEvent], safe=True
+            [User, Role, UserRoles, UserInfo, RoleInfo, LoginEvent], safe=True
         )
         # Create roles
         datastore.find_or_create_role(
@@ -84,5 +84,6 @@ if __name__ == '__main__':
             roles=['admin'],
         )
         admin.add_view(UserAdmin(User, endpoint='users'))
+        admin.add_view(RoleAdmin(Role, endpoint='roles'))
 
     app.run(host=APP_HOST, port=APP_PORT)
