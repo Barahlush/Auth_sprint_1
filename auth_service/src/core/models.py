@@ -21,8 +21,8 @@ class Role(Model):
 
 
 class User(Model):
-    email = TextField()
-    password_hash = TextField()
+    email = TextField(unique=True, null=False)
+    password_hash = TextField(null=False)
     fs_uniquifier = TextField(null=False)
     active = BooleanField(default=True)
 

@@ -9,6 +9,7 @@ from src.core.models import LoginEvent as PeeweeLoginEvent
 from src.core.models import Role as PeeweeRole
 from src.core.models import User as PeeweeUser
 from src.core.models import UserRoles as PeeweeUserRoles
+from src.db.postgres import db
 
 Role = TypeVar('Role')
 User = TypeVar('User')
@@ -238,3 +239,6 @@ class PeeweeUserDatastore(
             uniquifier = uuid.uuid4().hex
         user.fs_uniquifier = uniquifier
         self.put(user)
+
+
+datastore = PeeweeUserDatastore(db)
