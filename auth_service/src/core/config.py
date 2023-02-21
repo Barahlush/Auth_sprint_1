@@ -54,7 +54,7 @@ APP_CONFIG = {
     'JWT_COOKIE_SECURE': False,  # set to True in production
     'JWT_REFRESH_TOKEN_EXPIRES': datetime.timedelta(days=10),
     'JWT_COOKIE_CSRF_PROTECT': False,
-    'JWT_SESSION_COOKIE': False,
+    'JWT_SESSION_COOKIE': True,
     'JWT_JSON_KEY': os.getenv('JWT_JSON_KEY', 'access_token'),
     'JWT_REFRESH_JSON_KEY': os.getenv('JWT_REFRESH_JSON_KEY', 'refresh_token'),
     'WTF_CSRF_ENABLED': strtobool(
