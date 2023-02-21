@@ -1,7 +1,14 @@
 #SHELL := /bin/bash -O globstar
 
 test:
+	make run
 	pytest tests
+	docker-compose down
+test_api:
+	make run
+	sleep 2
+	st run --base-url http://localhost:5000/ --checks all auth_service/schema/openapi_v1.yaml --show-errors-tracebacks --debug-output-file log_schema_test.json
+	docker-compose down
 
 lint:
 	@echo
@@ -26,13 +33,10 @@ run:
 	cp .env.example .env
 	cp .docker.env.example .docker.env
 	poetry export -f requirements.txt --output auth_service/requirements.txt --without-hashes
-	docker-compose -f docker-compose.yml up --build
+	docker-compose -f docker-compose.yml up --build -d
 
 run_dev:
-	# Build and spin up main services with open external ports.
-	# Use when you want to run tests locally of debug services directly
-	cp tests/.env.example tests/.env
-	cp .docker.env.example tests/.docker.env
+	cp .env.example .env
+	cp .docker.env.example .docker.env
 	poetry export -f requirements.txt --output auth_service/requirements.txt --without-hashes
-	poetry export -f requirements.txt --output tests/requirements.txt --without-hashes
-	docker-compose -f docker-compose.yml -f tests/docker-compose.yml up --build -d
+	docker-compose -f docker-compose.yml up --build

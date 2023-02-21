@@ -73,3 +73,4 @@ tests/requirements.txt
 *.db
 postgres_data
 redis_data
+*test.json

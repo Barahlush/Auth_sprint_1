@@ -90,7 +90,7 @@ def login() -> Response:
 @views.route('/logout', methods=['POST'])
 @roles_required('user', 'admin')
 def logout() -> Response:
-    response = make_response(redirect(url_for('views.login')))
+    response = make_response(redirect(url_for('views.login')), 302)
 
     # Отзыв access токена
     if access_token := request.cookies.get('access_token_cookie'):
@@ -108,7 +108,7 @@ def logout() -> Response:
 @views.route('/logout_all', methods=['POST'])
 @roles_required('user', 'admin')
 def logout_all() -> Response:
-    response = make_response(redirect(url_for('views.login')))
+    response = make_response(redirect(url_for('views.login')), 302)
     logger.info('REVOKING ALL TOKENS')
     current_user = get_current_user()
     revoke_all_user_tokens(current_user)
