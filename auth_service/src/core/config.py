@@ -1,5 +1,6 @@
 import datetime
 import os
+from distutils.util import strtobool
 from secrets import token_urlsafe
 
 import dotenv
@@ -56,6 +57,8 @@ APP_CONFIG = {
     'JWT_SESSION_COOKIE': True,
     'JWT_JSON_KEY': os.getenv('JWT_JSON_KEY', 'access_token'),
     'JWT_REFRESH_JSON_KEY': os.getenv('JWT_REFRESH_JSON_KEY', 'refresh_token'),
-    'WTF_CSRF_ENABLED': False,
+    'WTF_CSRF_ENABLED': strtobool(
+        os.getenv('WTF_CSRF_ENABLED', 'false')
+    ),  # set to True in production
     'DEBUG': True,
 }

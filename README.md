@@ -67,6 +67,7 @@ Make команды
 <summary><h3 style="display: inline;"> 
 Как настроить проект для запуска
 </h3></summary>
+</details>
 
 #### 1. Установите зависимости проекта
 ```shell
