@@ -12,5 +12,4 @@ RUN pip3 install --upgrade pip \
 
 COPY . .
 
-RUN ls
 CMD python3 -m pytest
