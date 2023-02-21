@@ -2,7 +2,6 @@ from abc import abstractmethod
 from datetime import datetime
 
 import redis
-from loguru import logger
 
 from src.core.config import APP_CONFIG, REDIS_CONFIG
 
@@ -78,8 +77,6 @@ class RedisTokenBlocklist(TokenBlocklist):
     ) -> bool:
         if self.redis.get(token_identifier):
             return True
-        logger.info(self.redis.get(user_identifier))
-        logger.info(user_identifier)
         if revoke_datetime := self.redis.get(user_identifier):
             revoke_datetime = float(revoke_datetime)
             return bool(token_init_time < revoke_datetime)
