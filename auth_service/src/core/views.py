@@ -87,6 +87,83 @@ def login() -> Response:
     return response
 
 
+@views.route('/change_login', methods=['GET', 'POST'])
+@jwt_required()  # type: ignore
+def change_login() -> Response:
+    if request.method == 'GET':
+        next_url = request.args.get('next', url_for('views.index'))
+        return make_response(
+            render_template(
+                'security/change_login.html',
+                next_url=url_for('views.change_login', next=next_url),
+            ),
+            200,
+        )
+    if not request.form:
+        error_msg = 'Empty request'
+        return make_response(
+            render_template('security/change_login.html', error_msg=error_msg),
+            401,
+        )
+    new_name = request.form.get('new_name', None)
+    user = get_current_user()
+    user.name = new_name
+    user.save()
+    logger.info('name', new_name, user)
+    if not new_name or not user:
+        error_msg = 'Can`t find a user or empty new name'
+        return make_response(
+            render_template('security/change_login.html', error_msg=error_msg),
+            401,
+        )
+    logger.info(f'Success login change. New login {new_name}. User {user.id}')
+    next_url = request.args.get('next', url_for('views.index'))
+    response = cast(Response, redirect(next_url))
+    access_token, refresh_token = create_token_pair(user)
+    set_token_cookies(response, access_token, refresh_token)
+    return response
+
+
+@views.route('/change_password', methods=['GET', 'POST'])
+@jwt_required()  # type: ignore
+def change_password() -> Response:
+    if request.method == 'GET':
+        next_url = request.args.get('next', url_for('views.index'))
+        return make_response(
+            render_template(
+                'security/change_password.html',
+                next_url=url_for('views.change_password', next=next_url),
+            ),
+            200,
+        )
+    if not request.form:
+        error_msg = 'Empty request'
+        return make_response(
+            render_template(
+                'security/change_password.html', error_msg=error_msg
+            ),
+            401,
+        )
+    new_password = request.form.get('new_password', None)
+    user = get_current_user()
+    salt = generate_salt()
+    new_password_hash = hash_password(new_password, salt)  # type: ignore
+    user.password = new_password_hash
+    user.save()
+    logger.info('new_password', new_password, user)
+    if not new_password or not user:
+        error_msg = 'Can`t find a user or empty new password'
+        return make_response(
+            render_template(
+                'security/change_password.html', error_msg=error_msg
+            ),
+            401,
+        )
+    logger.info(f'Success password change for {user.id}')
+    next_url = request.args.get('next', url_for('views.index'))
+    return cast(Response, redirect(next_url))
+
+
 @views.route('/logout', methods=['POST'])
 @roles_required('user', 'admin')
 def logout() -> Response:
