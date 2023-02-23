@@ -15,6 +15,7 @@ from flask_jwt_extended import (
     unset_jwt_cookies,
     verify_jwt_in_request,
 )
+from flask_peewee.utils import object_list  # type: ignore
 from flask_wtf.csrf import generate_csrf  # type: ignore
 from loguru import logger
 
@@ -75,7 +76,7 @@ def login() -> Response:
         user=user,
     )
     user_history.save()
-    logger.info('user_history: {}', user_history)
+    logger.info('user_history: %s', user_history)
     next_url = request.args.get('next', url_for('views.index'))
     response = cast(Response, redirect(next_url))
 
@@ -109,7 +110,7 @@ def change_login() -> Response:
     user = get_current_user()
     user.name = new_name
     user.save()
-    logger.info('name {} {}', new_name, user)
+    logger.info('name %s %s', new_name, user)
     if not new_name or not user:
         error_msg = 'Can`t find a user or empty new name'
         return make_response(
@@ -117,7 +118,7 @@ def change_login() -> Response:
             401,
         )
     logger.info(
-        'Success login change. New login {}. User {}', new_name, user.id
+        'Success login change. New login %s. User %s', new_name, user.id
     )
     next_url = request.args.get('next', url_for('views.index'))
     response = cast(Response, redirect(next_url))
@@ -152,7 +153,7 @@ def change_password() -> Response:
     new_password_hash = hash_password(new_password, salt)  # type: ignore
     user.password = new_password_hash
     user.save()
-    logger.info('new_password {} {}', new_password, user)
+    logger.info('new_password %s %s', new_password, user)
     if not new_password or not user:
         error_msg = 'Can`t find a user or empty new password'
         return make_response(
@@ -161,7 +162,7 @@ def change_password() -> Response:
             ),
             401,
         )
-    logger.info('Success password change for {}', user.id)
+    logger.info('Success password change for %s', user.id)
     next_url = request.args.get('next', url_for('views.index'))
     return cast(Response, redirect(next_url))
 
@@ -242,10 +243,9 @@ def history() -> Response:
         LoginEvent.select()  # type: ignore
         .where(LoginEvent.user == current_user)
         .order_by(LoginEvent.registered)
-        .limit(10)
     )
     return make_response(
-        render_template('security/history.html', user_history=user_history),
+        object_list('security/history.html', user_history, paginate_by=10),
         200,
     )
 
