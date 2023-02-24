@@ -47,6 +47,12 @@ poetry add pendulum==2.0.5 --group dev
 ```shell
 poetry run pre-commit install
 ```
+
+#### 4. Создание новой версии миграционной БД
+```shell
+make new_database_revision
+```
+Источник: https://alembic.sqlalchemy.org/en/latest/tutorial.html
 </details>
 
 
