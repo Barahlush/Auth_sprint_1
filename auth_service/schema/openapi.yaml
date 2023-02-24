@@ -1,243 +1,333 @@
 openapi: 3.0.0
 info:
-  title: Flask Auth API
-  version: "1.0"
+  title: User Management API
+  description: A REST API for authentification and authorization in a film database.
+  version: 1.0.0
 servers:
-  - url: http://localhost:5000/
-    description: Local development server
+  - url: "http://localhost:3000/api/v1/auth/"
 paths:
-  /auth/login:
-    get:
-      description: Get the login page
-      responses:
-        "200":
-          description: OK
-          content:
-            text/html:
-              schema:
-                type: string
-    post:
-      description: Authenticate a user
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: The email of the user
-                password:
-                  type: string
-                  description: The password of the user
-                remember:
-                  type: boolean
-                  description: Whether to remember the user's session or not
-              required:
-                - email
-                - password
-      responses:
-        "302":
-          description: Redirect
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-                description: Set a cookie to store the user's access token
-        "401":
-          description: Unauthorized
-          content:
-            text/html:
-              schema:
-                type: string
-        "500":
-          description: Internal Server Error
-          content:
-            text/html:
-              schema:
-                type: string
-  /auth/logout:
-    post:
-      description: Log out a user
-      security:
-        - cookieAuth: []
-      responses:
-        "302":
-          description: Redirect
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-                description: Clear the user's access and refresh tokens
-        "405":
-          description: Method Not Allowed
-          content:
-            text/html:
-              schema:
-                type: string
-
-  /auth/logout_all:
-    post:
-      description: Log out all of a user's sessions
-      security:
-        - cookieAuth: []
-      responses:
-        "302":
-          description: Redirect
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-                description: Clear all of the user's access and refresh tokens
-            Location:
-              schema:
-                type: string
-                description: Redirect to the login page
-        "405":
-          description: Method Not Allowed
-          content:
-            text/html:
-              schema:
-                type: string
-  /auth/register:
-    get:
-      description: Get the registration page
-      responses:
-        "200":
-          description: OK
-          content:
-            text/html:
-              schema:
-                type: string
+  "/auth/register":
     post:
       description: Register a new user
       requestBody:
-        required: true
         content:
-          application/x-www-form-urlencoded:
+          application/json:
             schema:
               type: object
               properties:
                 name:
-                  type: string
                   description: The name of the user
+                  type: string
                 email:
-                  type: string
                   description: The email of the user
-                password:
                   type: string
+                  format: email
+                password_hash:
                   description: The password of the user
-              required:
-                - name
-                - email
-                - password
+                  type: string
+                  format: password
+                fs_uniquifier:
+                  description: The identifier of the user
+                  type: string
+                active:
+                  description: The user activity
+                  type: boolean
+        required: true
       responses:
         "302":
-          description: Redirect
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully registered user
+                  id:
+                    type: integer
+                    example: 123
         "401":
-          description: Unauthorized
-          content:
-            text/html:
-              schema:
-                type: string
-        "500":
-          description: Internal Server Error
-          content:
-            text/html:
-              schema:
-                type: string
-  /auth/history:
+          description: Forget to add username/password
     get:
-      description: Get the login history for the current user
-      security:
-        - cookieAuth: []
+      description: Visit a user register page
       responses:
         "200":
-          description: OK
+          description: Successful visiting
           content:
-            text/html:
+            application/json:
               schema:
-                type: string
-        "302":
-          description: Redirect
-          headers:
-            Location:
-              schema:
-                type: string
-                description: Redirect to the login page
-        "500":
-          description: Internal Server Error
-          content:
-            text/html:
-              schema:
-                type: string
-  /auth/:
-    get:
-      description: Get the home page of the auth service
-      security:
-        - cookieAuth: []
-      responses:
-        "200":
-          description: OK
-          content:
-            text/html:
-              schema:
-                type: string
-        "302":
-          description: Redirect
-          headers:
-            Location:
-              schema:
-                type: string
-                description: Redirect to the login page
-        "500":
-          description: Internal Server Error
-          content:
-            text/html:
-              schema:
-                type: string
-  /auth/refresh:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully visit a register page
+        "401":
+          description: Empty request
+  "/auth/login":
     post:
-      description: Refresh the user's access token
-      security:
-        - cookieAuth: []
+      description: Login an existing user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: The email of the user
+                  type: string
+                  format: email
+                password_hash:
+                  description: The password of the user
+                  type: string
+                  format: password
+        required: true
       responses:
-        "302":
-          description: Redirect
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-                description: Set a cookie to store the user's access token
-            Location:
-              schema:
-                type: string
-                description: Redirect to the home page
-        "302":
-          description: Redirect
-          headers:
-            Location:
-              schema:
-                type: string
-                description: Redirect to the login page
-        "405":
-          description: Method Not Allowed
+        "200":
+          description: Successful login
           content:
-            text/html:
+            application/json:
               schema:
-                type: string
-        "500":
-          description: Internal Server Error
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully logged in.
+                  id:
+                    type: integer
+                    example: 123
+                  tokens:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzLCJpYXQiOjE1MTYyMzkwMjJ9.fjQ2M0jJHfjkd0a82jdkKjdkKjdkKjdkKjdkK
+                      refresh_token:
+                        type: string
+                        example: fjQ2M0jJHfjkd0a82jdkKjdkKjdkKjdkKjdkK
+        "401":
+          description: Empty request
+    get:
+      description: Visit a user login page
+      responses:
+        "200":
+          description: Successful visiting
           content:
-            text/html:
+            application/json:
               schema:
-                type: string
-
-components:
-  securitySchemes:
-    cookieAuth:
-      type: apiKey
-      in: cookie
-      name: access_token_cookie
-
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully visit a login page
+        "401":
+          description: Empty request
+  "/auth/logout":
+    post:
+      description: Logout an existing user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  message:
+                    type: string
+                    example: Successfully logged out
+                  id:
+                    type: integer
+                    example: 123
+      responses:
+        "200":
+          description: Successful logout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully logged out
+        "400":
+          description: Bad request
+  "/auth/logout_all":
+    post:
+      description: Logout from all devices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  message:
+                    type: string
+                    example: Successfully logged out
+                  id:
+                    type: integer
+                    example: 123
+      responses:
+        "200":
+          description: Successful logout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully logged out
+  "/auth/change_login":
+    post:
+      description: New login for existing user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: The old name of the user
+                  type: string
+                new_name:
+                  description: The new name of the user
+                  type: string
+        required: true
+      responses:
+        "200":
+          description: Successful login change
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully change login
+                  new_name:
+                    type: string
+                    example: Ivan
+        "401":
+          description: Empty request
+    get:
+      description: Visit a user change login page
+      responses:
+        "200":
+          description: Successful visiting
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully visit a login page
+        "401":
+          description: Empty request
+  "/auth/change_password":
+    post:
+      description: New password for existing user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  description: The old password of the user
+                  type: string
+                new_password:
+                  description: The new password of the user
+                  type: string
+        required: true
+      responses:
+        "200":
+          description: Successful password change
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully change password
+                  new_password:
+                    type: string
+                    example: Ivan
+        "401":
+          description: Empty request
+    get:
+      description: Visit a user change password page
+      responses:
+        "200":
+          description: Successful visiting
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully visit a login password
+        "401":
+          description: Empty request
+  "/auth/history":
+    get:
+      description: Visit a page with the sign-in history
+      responses:
+        "200":
+          description: Successful visiting
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully visit sign-in history.
+                  signin_history:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        registered:
+                          type: string
+                          format: date-time
+                          example: "2022-05-01T12:30:00"
+                        device:
+                          type: string
+                          example: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0"
+        "400":
+          description: Bad request
+  "/auth/profile":
+    get:
+      description: Visit a profile page
+      responses:
+        "200":
+          description: Successful visiting
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully visit a profile page
+        "400":
+          description: Bad request
+  "/auth/refresh":
+    get:
+      description: Visit a page to refresh user token
+      responses:
+        "200":
+          description: Successful visiting
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully visit a refresh page
+        "400":
+          description: Bad request
+ 
