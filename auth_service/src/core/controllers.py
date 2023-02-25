@@ -34,7 +34,7 @@ class BaseController:
         pass
 
     def __call__(self) -> Response:
-        if request.method == "GET":
+        if request.method == 'GET':
             return self.get(request)
         return self.post(request)
 
@@ -303,7 +303,7 @@ class IndexController(BaseController):
             try:
                 name = current_user.name
                 email = current_user.email
-                contex.update({'"user_name': name})
+                contex.update({'user_name': name})
                 contex.update({'user_email': email})
                 welcome_string = f'Welcome back, {current_user.name}!'
             except AttributeError:

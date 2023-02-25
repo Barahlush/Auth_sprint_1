@@ -42,58 +42,58 @@ def add_route(
     )
 
 
-add_route('/login', ['GET', 'POST'], "login", LoginController)
-add_route('/register', ['GET', 'POST'], "register", RegisterController)
+add_route('/login', ['GET', 'POST'], 'login', LoginController)
+add_route('/register', ['GET', 'POST'], 'register', RegisterController)
 add_route(
     '/logout',
     ['POST'],
-    "logout",
+    'logout',
     roles_required('user', 'admin'),
     LogoutController,
 )
 add_route(
     '/logout_all',
     ['POST'],
-    "logout_all",
+    'logout_all',
     roles_required('user', 'admin'),
     LogoutAllController,
 )
 add_route(
     '/refresh',
     ['POST'],
-    "refresh",
+    'refresh',
     roles_required('user', 'admin'),
     RefreshController,
 )
 
 add_route(
-    '/', ["GET"], "index", roles_required('user', 'admin'), IndexController
+    '/', ['GET'], 'index', roles_required('user', 'admin'), IndexController
 )
 add_route(
     '/profile',
     ['GET'],
-    "profile",
+    'profile',
     roles_required('user', 'admin'),
     ProfileController,
 )
 add_route(
     '/history',
     ['GET'],
-    "history",
+    'history',
     roles_required('user', 'admin'),
     HistoryController,
 )
 add_route(
     '/change_login',
     ['GET', 'POST'],
-    "change_login",
+    'change_login',
     roles_required('user', 'admin'),
     LoginChangeController,
 )
 add_route(
     '/change_password',
     ['GET', 'POST'],
-    "change_password",
+    'change_password',
     roles_required('user', 'admin'),
     PasswordChangeController,
 )
