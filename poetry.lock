@@ -629,6 +629,20 @@ wtf-peewee = "*"
 wtforms = "*"
 
 [[package]]
+name = "flask-script"
+version = "2.0.6"
+description = "Scripting support for Flask"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Flask-Script-2.0.6.tar.gz", hash = "sha256:6425963d91054cfcc185807141c7314a9c5ad46325911bd24dcb489bd0161c65"},
+]
+
+[package.dependencies]
+Flask = "*"
+
+[[package]]
 name = "flask-wtf"
 version = "1.1.1"
 description = "Form rendering, validation, and CSRF protection for Flask with WTForms."
@@ -2903,4 +2917,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "28201c3ee9214f274a6cb87f3fb258968146d470874ea6323bd7632009a32a2e"
+content-hash = "a32227b431c0345c745279d29ca0626d3d3d5f00bc7bdd87f6ed11dee54c6bb5"

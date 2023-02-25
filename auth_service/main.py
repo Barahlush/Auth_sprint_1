@@ -1,3 +1,4 @@
+from flask_script import Manager
 from gevent import monkey
 from src.db.postgres import patch_psycopg2
 
@@ -34,6 +35,10 @@ from src.db.postgres import db
 app = Flask(__name__)
 app.config |= APP_CONFIG
 csrf = CSRFProtect(app)
+# Migrations
+manager = Manager(app)
+manager.add_command('db', db.manager)
+app.cli.add_command(datastore.cli, 'db')
 
 admin = admin.Admin(
     app, name='Admin Panel', url='/auth/admin', template_mode='bootstrap3'
@@ -64,6 +69,7 @@ if __name__ == '__main__':
         app.register_blueprint(views)
         app.register_blueprint(not_auth)
         jwt.init_app(app)
+        app.cli()
 
         db.create_tables(
             [
