@@ -629,20 +629,6 @@ wtf-peewee = "*"
 wtforms = "*"
 
 [[package]]
-name = "flask-script"
-version = "2.0.6"
-description = "Scripting support for Flask"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "Flask-Script-2.0.6.tar.gz", hash = "sha256:6425963d91054cfcc185807141c7314a9c5ad46325911bd24dcb489bd0161c65"},
-]
-
-[package.dependencies]
-Flask = "*"
-
-[[package]]
 name = "flask-wtf"
 version = "1.1.1"
 description = "Form rendering, validation, and CSRF protection for Flask with WTForms."
@@ -2569,14 +2555,14 @@ files = [
 
 [[package]]
 name = "types-psycopg2"
-version = "2.9.21.6"
+version = "2.9.21.7"
 description = "Typing stubs for psycopg2"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-psycopg2-2.9.21.6.tar.gz", hash = "sha256:fbe8b393f6c46bd7e0883d26dc31795dea4d8d812c211d40893559a81e2a805c"},
-    {file = "types_psycopg2-2.9.21.6-py3-none-any.whl", hash = "sha256:830685da491ee014e3ea97c569b0e3b80a2bc4255f804fbd55993be7f7796d78"},
+    {file = "types-psycopg2-2.9.21.7.tar.gz", hash = "sha256:10358015a5f7bd96b4ca90b18da1e20783a73c2cd47392e794b0120929ec7d98"},
+    {file = "types_psycopg2-2.9.21.7-py3-none-any.whl", hash = "sha256:0e065f4f415df43c4955ae63250615cc468e86a28b8ee4e3014f514361e9047b"},
 ]
 
 [[package]]
@@ -2917,4 +2903,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a32227b431c0345c745279d29ca0626d3d3d5f00bc7bdd87f6ed11dee54c6bb5"
+content-hash = "28201c3ee9214f274a6cb87f3fb258968146d470874ea6323bd7632009a32a2e"

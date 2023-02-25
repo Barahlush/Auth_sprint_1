@@ -48,12 +48,24 @@ poetry add pendulum==2.0.5 --group dev
 poetry run pre-commit install
 ```
 
-#### 4. Создание новой версии миграционной БД
-Используйте команду, чтобы создать миграцию БД или
-файл auth_service/src/db/make_migrate.py
+#### 4. Механизм миграции Базы данных
+Чтобы увидеть возможности использования peewee-migrate используйте команду
 ```shell
-pw_migrate create --help
+pw_migrate --help
 ```
+Для создания миграции
+```shell
+pw_migrate create [OPTIONS] NAME
+```
+Для запуска процесса миграции
+```shell
+pw_migrate migrate [OPTIONS]
+```
+Чтобы откатить созданную миграцию
+```shell
+pw_migrate rollback [OPTIONS]
+```
+
 Источник: https://github.com/klen/peewee_migrate
 </details>
 
