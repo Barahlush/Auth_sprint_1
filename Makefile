@@ -40,6 +40,3 @@ run_dev:
 	cp .docker.env.example .docker.env
 	poetry export -f requirements.txt --output auth_service/requirements.txt --without-hashes
 	docker-compose -f docker-compose.yml up --build
-
-new_database_revision:
-	alembic revision -m "new_revision"
