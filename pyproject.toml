@@ -49,7 +49,6 @@ djlint = "^1.19.14"
 
 [tool.blue]
 line-length = 79
-exclude = ["alembic/versions"]
 
 [tool.pytest.ini_options]
 filterwarnings = ["ignore::DeprecationWarning"]
@@ -67,8 +66,7 @@ exclude = [
     "venv",
     "postgres_data",
     "redis_data",
-    "tests",
-    "alembic"
+    "tests"
 ]
 
 
@@ -97,7 +95,7 @@ select = [
     "W",
 ]
 ignore = ["A003"]
-exclude = ["auth_service/main.py", "alembic"]
+exclude = ["auth_service/main.py",]
 target-version = "py310"
 
 [tool.ruff.per-file-ignores]
